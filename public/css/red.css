@@ -1,0 +1,431 @@
+/* $Name: Rot wie das Blut deiner Opfer.$ */
+.powered-by {
+    position: fixed;
+    bottom: 23px;
+    right: 10px;
+    width: 127px;
+    height: 25px;
+    z-index: 1000;
+    background-image:url(../images/red/PoweredBy_ZF_4LightBG.png);
+    margin-right: 10px;
+}
+.powered-by a {
+    display: block;
+    width: 127px;
+    height: 25px;
+}
+body {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    padding-top: 25px;
+    padding-right: 50px;
+    padding-left: 50px;
+    margin: 0;
+}
+h3 {
+    vertical-align: middle;
+}
+#pageSpacer {
+    height: 25px;
+}
+.nav-top {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+    height: 21px;
+    width: 100%;
+    vertical-align: middle;
+    background-image:url(../images/red/nav-top.png);
+    background-repeat: repeat-x;
+    color: #FFFFFF;
+    padding-left: 50px;
+}
+.nav-top .navigation {
+    float: left;
+    margin-top: 1px;
+}
+.nav-top .account{
+    float:right;
+    margin-top: 1px;
+    margin-right:60px;
+    text-align:right;
+}
+.nav-bottom {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    z-index: 1000;
+    height: 21px;
+    width: 100%;
+    vertical-align: middle;
+    background-image:url(../images/red/nav-bottom.png);
+    background-repeat: repeat-x;
+    color: #FFFFFF;
+    padding-left: 50px;
+}
+.nav-bottom .navigation {
+    float:left;
+    margin-top: 2px;
+}
+.nav-bottom .version {
+    float:right;
+    text-align:right;
+    margin-right:60px;
+    margin-top: 2px;
+}
+.center-content {
+    position:absolute;
+    top:22px;
+    bottom:22px;
+    left:1px;
+    right:1px;
+    overflow:auto;
+    padding-left: 20px;
+}
+.nav-hint {
+    font-size: 0.8em;
+    font-style: italic;
+    padding-top:4px;
+    font-weight: bold;
+    color: #FFFF00;
+}
+.bold {
+    font-weight: bold;
+}
+.italic {
+    font-style: italic;
+}
+.underline {
+    text-decoration: underline;
+}
+.nav-top a,
+.nav-top a:link,
+.nav-top a:visited,
+.nav-bottom a,
+.nav-bottom a:link,
+.nav-bottom a:visited {
+    color: #FFFFFF;
+    font-weight: bold;
+    text-decoration: none;
+}
+.nav-top a:hover,
+.nav-bottom a:hover{
+    color: #FFCC99;
+    text-decoration: none;
+}
+#planetChanger {
+    position: fixed;
+    right: 10px;
+    top: 0;
+    z-index: 1001;
+    vertical-align: middle;
+}
+.ttCategory {
+    
+}
+.messageInfo a,
+.messageInfo a:link,
+.messageInfo a:visited,
+.messageInfo a:active,
+.ttCategory a,
+.ttCategory a:link,
+.ttCategory a:visited,
+.ttCategory a:active {
+    color: #800000;
+    text-decoration: none;
+}
+.messageInfo a:hover,
+.ttCategory a:hover {
+    color: #DD6633;
+    text-decoration: none;
+}
+.errorCategory {
+    
+}
+.errorCategory a,.errorCategory a:link,.errorCategory a:visited {
+    color: #800000;
+    text-decoration: none;
+}
+.errorCategory a:hover {
+    color: #DD6633;
+    text-decoration: none;
+}
+.ttCategoryTitle {
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 2px;
+}
+.subCategory {
+    width: 500px;
+    border: 1px solid #FF9999;
+    background-color: #FFEEDD;
+    padding-left: 5px;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-bottom: 10px;
+    margin:10px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+.errorCategory .subCategory {
+    /*width: 700px;*/
+    display:table;
+    border: 1px solid #FF9999;
+    background-color: #FFEEDD;
+    padding-left: 5px;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-bottom: 10px;
+    margin:10px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+.subCategoryTitle {
+    padding: 5px;
+    font-size: 1em;
+    font-weight: bold;
+}
+.h16 {
+    height:16px;
+}
+.subCategory .l1 {
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 2px 3px 2px 3px;
+    margin: 0 7px 0 2px;
+}
+.subCategory .l2 {
+    font-size: 1em;
+    font-weight: bold;
+    padding: 2px 3px 2px 3px;
+    margin: 0 7px 0 22px;
+}
+.subCategory .l3 {
+    font-size: 1em;
+    font-weight: normal;
+    padding: 2px 3px 2px 3px;
+    margin: 0 7px 0 42px;
+}
+.subCategoryItem {
+    font-size: 1em;
+    font-weight: normal;
+    padding: 2px 0 2px 3px;
+    margin: 0 10px 0 17px;
+}
+.subCategoryItemDark {
+    font-size: 1em;
+    font-weight: normal;
+    padding: 2px 0 2px 3px;
+    margin: 0 10px 0 17px;
+    background-color: #FFDDCC;
+}
+.dark {
+    background-color: #FFDDCC;
+}
+.level-info {
+    float:right; 
+    text-align:right;
+    font-size:0.7em;
+    height:16px;
+    width:50px;
+    margin-top:2px;
+}
+.planetSelect {
+    position: fixed;
+    top:20px;
+    right:15px;
+    display:table;
+    border: 1px solid #FF9999;
+    background-color: #FFEEDD;
+    padding-left: 5px;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-bottom: 10px;
+    margin:10px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+.red {
+    color: #FF0000;
+}
+.small {
+    font-size: 0.7em;
+}
+.nowrap {
+    white-space: nowrap;
+}
+.dark {
+    background-color: #FFDDCC;
+}
+.toolbutton { /*display:block;*/
+    min-width: 25px;
+    background-color: #FFDDCC;
+    border: 1px solid #FF9999;
+    padding: 1px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    margin-left: 0;
+    margin-right: 1px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+}
+.toolbutton:hover { /*display:block;*/
+    background-color: #FFCCCC;
+    border: 1px solid #995555;
+}
+form select.detaillink {
+    width: 300px;
+}
+.fixed-font {
+    font-family: 'Courier New',Courier,monospace;
+}
+.float-left {
+    float:left;
+}
+.float-right {
+    float:right;
+}
+.align-left {
+    text-align:left;
+}
+.align-right {
+    text-align:right;
+}
+.green {
+    color: #080;
+}
+.setPass {
+    display:none;
+}
+a img {
+    border: 0 solid #000;
+}
+.clear {
+    clear:both;
+}
+.depencyName {
+    width:375px;
+    float:left;
+}
+.depencyLevel {
+    float:left;
+    width:50px;
+    text-align:right;
+}
+.revDepencyName {
+    width:385px;
+    float:left;
+}
+.revDepencyLevel {
+    float:left;
+    width:50px;
+    text-align:right;
+}
+.depencyOk {
+    float:left;
+    width:10px;
+    margin: 3px 0 0 3px;
+    background: url(../images/check2.png) 0 0 no-repeat;
+    height:10px;
+}
+.depencyFail {
+    float:left;
+    width:10px;
+    margin: 3px 0 0 3px;
+    background: url(../images/delete2.png) 0 0 no-repeat;
+    height:10px;
+}
+.detailLinks {
+    display:none;
+}
+.form-input-label {
+    float: left;
+    width:110px;
+}
+.form-input {
+    float:left;
+    width:350px;
+}
+.w300 {
+    width:300px;
+}
+#requirements {
+    width:400px;
+}
+#importDialog {
+    display:none;
+}
+.bugsLabel {
+    float:left;
+    width:130px;
+}
+.bugsValue {
+    float:left;
+    width:300px;
+}
+.bugs .form-input-label {
+    float:left;
+    width:140px;
+}
+.bugs .form-input {
+    float:left;
+    width:300px;
+}
+.subCategoryTitle.bugTitle {
+    height:32px;
+    padding:0 0 0 35px;
+    margin:0 0 8px 0;
+}
+.subCategoryTitle.bugTitle.open {
+    background:url(../images/open.png) no-repeat;
+}
+.subCategoryTitle.bugTitle.progress {
+    background:url(../images/progress.png) no-repeat;
+}
+.subCategoryTitle.bugTitle.feedback {
+    background:url(../images/feedback.png) no-repeat;
+}
+.subCategoryTitle.bugTitle.resolved {
+    background:url(../images/resolved.png) no-repeat;
+}
+.subCategoryTitle.bugTitle.closed {
+    background:url(../images/closed.png) no-repeat;
+}
+.subCategoryTitle.bugTitle.wontFix {
+    background:url(../images/wontfix.png) no-repeat;
+}
+.messageInfo {
+    position:fixed;
+    top:103px;
+    right:15px;
+    width:171px;
+    display:table;
+    background-color: #FFDDCC;
+    border: 1px solid #FF9999;
+    padding-left: 5px;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-bottom: 10px;
+    margin:10px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+.messageInfo .title {
+    font-weight:bold;
+}
+.messageInfo #newMsgs {
+    background:url(../images/newMessage.png) no-repeat;
+    padding-left:19px;
+    margin-top:4px;
+}
+.messageInfo #totalMsgs {
+    background:url(../images/message.png) no-repeat;
+    margin-top:10px;
+    padding-left:19px;
+}

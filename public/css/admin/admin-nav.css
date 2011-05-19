@@ -1,0 +1,29 @@
+.adminNavigation {
+    position: fixed;
+    right:20px;
+    bottom:55px;
+    border: 2px solid #F00;
+    background-color: #800;
+    width: 200px;
+    height:35px;
+    text-align:center;
+    padding: 5px;
+    color:#F00;
+	font-weight:bold;
+}
+.adminNavigation a,
+.adminNavigation a:link,
+.adminNavigation a:visited {
+    color: #F00;
+    text-decoration: none;
+}
+
+.adminNavigation a:hover {
+    color: #FF0;
+    text-decoration: none;
+}
+
+.adminNavigation h1 {
+    font-size:1.2em;
+    margin:0;
+}

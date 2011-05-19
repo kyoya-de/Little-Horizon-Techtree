@@ -1,0 +1,16 @@
+# Rewrite rules for Zend Framework by Zend Tool
+# There are some problems with this rules.
+# Using settings below until fix is available for these problems.
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} -s [OR]
+RewriteCond %{REQUEST_FILENAME} -l [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^.*$ - [NC,L]
+RewriteRule ^.*$ index.php [NC,L]
+
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteRule .* index.php
+
+# Security: Don't allow browsing of directories
+Options -Indexes
+

@@ -1,0 +1,190 @@
+.adminNavigation {
+    border: 2px solid #FFF !important;
+    width:200px !important;
+    background-color:#000 !important;
+    color:#999 !important;
+}
+.adminNavigation a,
+.adminNavigation a:link,
+.adminNavigation a:active,
+.adminNavigation a:visited {
+    color:#DDD !important;
+}
+.adminNavigation a:hover {
+    color:#FFF !important;
+}
+.adminCategory .form-input-label {
+    float:left;
+    width:150px;
+    height:21px;
+}
+.adminCategory .form-input {
+    height:21px;
+}
+.adminCategory .form-element {
+    height:25px;
+    padding:1px 10px 1px 25px;
+}
+.adminCategory .form-element-textarea {
+    height:210px;
+    padding:1px 10px 1px 25px;
+}
+.adminCategory .form-element-textarea textarea {
+    width:400px;
+    height:200px;
+}
+.adminCategory .l1 {
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 2px 10px 2px 5px;
+}
+.adminCategory .l2 {
+    font-size: 1em;
+    font-weight: bold;
+    padding: 2px 10px 2px 35px;
+    background: url(l2.png) 14px 2px no-repeat;
+}
+.adminCategory .l3 {
+    font-size: 1em;
+    font-weight: normal;
+    font-style: italic;
+    padding: 2px 10px 2px 65px;
+    background: url(l3.png) 44px 2px no-repeat;
+}
+.adminCategory .l4 {
+    font-size: 1em;
+    font-weight: normal;
+    padding: 2px 10px 2px 95px;
+    background: url(l4.png) 74px 2px no-repeat;
+}
+.adminCategory .last-update {
+    float:right; 
+    text-align:right;
+    font-size:12px;
+    height:16px;
+    width:250px;
+    margin-top:2px;
+    font-style:normal !important;
+    font-weight:normal !important;
+    
+}
+.adminCategory .log {
+    padding: 2px 10px 2px 25px;
+}
+.adminCategory .log table {
+    border-top:1px solid #AAA;
+    border-left:1px solid #AAA;
+    border-bottom:0 solid #AAA;
+    border-right:0 solid #AAA;
+}
+.adminCategory .log table td {
+    padding: 0 10px;
+    margin: 0;
+    border-bottom:1px solid #AAA;
+    border-right:1px solid #AAA;
+}
+.adminCategory .log table th {
+    padding: 0 10px;
+    margin: 0;
+    border-bottom:1px solid #AAA;
+    border-right:1px solid #AAA;
+}
+.adminCategory {
+    width: 900px;
+    border: 1px solid #999;
+    background-color: #000;
+    padding-left: 5px;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-bottom: 10px;
+    margin:10px;
+}
+.adminCategory .dark {
+    background-color:#222;
+}
+.messageInfo a,
+.messageInfo a:link,
+.messageInfo a:visited,
+.messageInfo a:active,
+.adminCategory a,
+.adminCategory a:link,
+.adminCategory a:active,
+.adminCategory a:visited {
+    color:#DDD !important;
+}
+.messageInfo a:hover,
+.adminCategory a:hover {
+    color:#FFF !important;
+}
+body {
+    background-color:#000 !important;
+    color:#999 !important;
+}
+.nav-top {
+    background-image:url(../../images/admin/nav-top.png) !important;
+}
+.nav-bottom {
+    background-image:url(../../images/admin/nav-bottom.png) !important;
+}
+.nav-top a:hover,
+.nav-bottom a:hover {
+    color:#AAA !important;
+}
+.planetSelect {
+    background-color:#000 !important;
+    border:1px solid #AAA !important;
+}
+.powered-by {
+    background-image:url("../../images/admin/PoweredBy_ZF_4LightBG.png") !important;
+}
+input, select, textarea, button {
+    color:#999;
+    background-color:#000;
+    border:2px solid #888;
+}
+.adminNavigation {
+}
+.small {
+    font-size:0.8em !important;
+}
+.adminCategory .type {
+    background-color:#444;
+    color:#AAA;
+}
+.green {
+    color:#0F0 !important;
+}
+.log .filter {
+    font-size: 12px;
+    color:#FFF;
+}
+.messageInfo {
+    position:fixed;
+    top:103px;
+    right:15px;
+    width:171px;
+    display:table;
+    background-color:#000 !important;
+    border:1px solid #AAA !important;
+    padding-left: 5px;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-bottom: 10px;
+    margin:10px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+.messageInfo .title {
+    font-weight:bold;
+}
+.messageInfo #newMsgs {
+    background:url(../../images/newMessage.png) no-repeat;
+    padding-left:19px;
+    margin-top:4px;
+}
+.messageInfo #totalMsgs {
+    background:url(../../images/message.png) no-repeat;
+    margin-top:10px;
+    padding-left:19px;
+}
