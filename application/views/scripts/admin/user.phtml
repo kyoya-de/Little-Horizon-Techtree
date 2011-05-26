@@ -1,0 +1,113 @@
+<?php
+$this->headTitle('Benutzer bearbeiten');
+$js = <<<EOT
+$('#setPwToggle').toggle(
+function() {
+    $('.setPass').slideDown(400);
+    $('#setPw').removeAttr('disabled');
+    $('#setPwToggle').html('nicht setzen');
+},
+function() {
+    $('.setPass').slideUp(400);
+    $('#setPw').attr('disabled', 'disabled');
+    $('#setPwToggle').html('setzen');
+});
+EOT;
+$this->jQuery()->addOnLoad($js);
+?>
+<div class="ttCategory">
+    <div class="ttCategoryTitle">Admin</div>
+    <div class="adminCategory">
+    <form action="<?php echo $this->url(array(
+        'controller' => 'admin',
+        'action' => 'do',
+    ),null, true);?>" method="post" enctype="multipart/formdata">
+        <div class="form-element">
+            <div class="form-input-label">User-ID:</div>
+            <div class="form-input"><input type="text" name="userId" readonly="readonly" value="<?php echo $this->userInfo['id']; ?>"/></div>
+        </div>
+        <div class="clear"></div>
+        <div class="form-element">
+            <div class="form-input-label">Username:</div>
+            <div class="form-input"><input type="text" name="username" value="<?php echo $this->userInfo['username']; ?>"/></div>
+        </div>
+        <div class="clear"></div>
+        <div class="form-element">
+            <div class="form-input-label">Accounttyp:</div>
+            <div class="form-input"><select name="accountType">
+<?php
+    foreach (TechTree_Utils::getAccountTypes() as $typeId => $typeName) {
+?>
+                <option value="<?php echo $typeId; ?>"<?php echo ($this->userInfo['accountType'] == $typeId) ? ' selected="selected"' : ''; ?>><?php echo $typeName; ?></option>
+<?php
+    }
+?>
+            </select></div>
+        </div>
+        <div class="form-element">
+            <div class="form-input-label">Passwort?</div>
+            <div class="form-input"><?php echo ($this->userInfo['passSet'] == 1) ? '<span class="green bold">gesetzt</span>' : '<span class="red bold">nicht gesetzt</span>'; ?> <span class="small">[ <a href="#" id="setPwToggle">setzen</a> ]</span></div>
+        </div>
+        <div class="clear"></div>
+        <div class="form-element setPass">
+            <div class="form-input-label setPass">Passwort setzen:</div>
+            <div class="form-input setPass"><input type="text" name="password" id="setPw" disabled="disabled"/></div>
+        </div>
+        <div class="clear"></div>
+        <div class="form-element">
+            <div class="form-input-label">Style:</div>
+            <div class="form-input"><select name="style">
+<?php
+    foreach (TechTree_Utils::getAvailableStyles() as $styleId => $styleName) {
+?>
+                <option value="<?php echo $styleId; ?>"<?php echo ($this->userInfo['style'] == $styleId) ? ' selected="selected"' : '';?>><?php echo $styleName; ?></option>
+<?php
+    }
+?>
+            </select></div>
+        </div>
+        <div class="clear"></div>
+        <div class="form-element">
+            <div class="form-input-label">Techs-ID:</div>
+            <div class="form-input"><input type="text" name="techsId" value="<?php echo $this->userInfo['techsId']; ?>"/></div>
+        </div>
+        <div class="clear"></div>
+        <div class="form-element">
+            <div class="form-input-label">Aktueller Planet:</div>
+            <div class="form-input"><input type="text" name="currentPlanet" value="<?php echo $this->userInfo['currentPlanet']; ?>"/></div>
+        </div>
+        <div class="clear"></div>
+        <div class="form-element">
+            <div class="form-input-label">Status:</div>
+            <div class="form-input"><select name="active">
+                <option value="0"<?php echo ($this->userInfo['active'] == 0) ? ' selected="selected"' : ''; ?>">inaktiv</option>
+                <option value="1"<?php echo ($this->userInfo['active'] == 1) ? ' selected="selected"' : ''; ?>">aktiv</option>
+            </select></div>
+        </div>
+        <div class="clear"></div>
+        <div class="form-element">
+            <div class="form-input-label">&nbsp;</div>
+            <div class="form-input"><button type="submit" name="doAction" value="userEdit">Speichern</button> <button type="submit" name="doAction" value="userDelete">Löschen</button></div>
+        </div>
+    </form>
+<?php
+    if (isset($this->result)) {
+?>
+    <div class="subCategoryItem">
+<?php
+        if ($this->result) {
+?>
+        <span class="green bold">Speichern erfolgreich.</span>
+<?php
+        } else {
+?>
+        <span class="red bold">Speichern fehlgeschlagen.</span>
+<?php
+        }
+?>
+    </div>
+<?php
+    }
+?>
+    </div>
+</div>

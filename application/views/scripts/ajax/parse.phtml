@@ -1,0 +1,15 @@
+<?php
+echo json_encode(
+    array(
+        'url' => $this->url(
+            array(
+                'controller' => 'objects',
+                'action' => 'details',
+                'id' => $this->id,
+            ),
+            null,
+            true
+        )
+    )
+);
+?>

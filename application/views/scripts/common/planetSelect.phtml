@@ -1,0 +1,18 @@
+<?php
+    $authSession = TechTree_Session::getNamespace('Auth');
+    if($authSession->techsId !== null)
+    {
+        $settings = new Application_Model_UserSettings();
+        $planets = $settings->getRegisteredPlanets($authSession->techsId);
+        Application_Form_PlanetSelect::setPlanets($planets);
+        $planetForm = new Application_Form_PlanetSelect();
+        $planetForm->setDefaults(array('planet' => $authSession->currentPlanet));
+        $planetForm->removeDecorator('HtmlTag');
+?>
+    <div class="planetSelect">
+        <div class="subCategoryTitle">Planeten:</div>
+        <?php echo $planetForm; ?>
+    </div>
+<?php
+    }
+?>

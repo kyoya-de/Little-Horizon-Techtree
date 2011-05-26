@@ -1,0 +1,89 @@
+<?php
+$this->headTitle('Actionhistory');
+$request = Zend_Controller_Front::getInstance()->getRequest();
+?>
+<div class="ttCategory">
+    <div class="ttCategoryTitle">Admin</div>
+    <div class="adminCategory">
+        <div class="l1">Logged user actions <span class="small">[ <?php echo $this->hyperlink('Log leeren', array(
+            'controller' => 'admin',
+            'action' => 'clearLog',
+        )); ?> ]</span></div>
+        <div class="log"><form action="<?php echo $this->url(array(
+            'controller' => 'admin',
+            'action' => 'log',
+        ), null, true);?>" method="post" id="filterForm"><table cellspacing="0">
+            <tr>
+                <th>Id</th>
+                <th>Action</th>
+                <th>Item</th>
+                <th>User</th>
+                <th>Time</th>
+            </tr>
+            <tr>
+                <td><input type="submit" class="filter" value="Apply"/></td>
+                <td><select name="actionFilter" onchange="$('#filterForm').submit();">
+                    <option value="">- kein Filter -</option>
+        <?php
+foreach ($this->logActions as $logAction) {
+?>
+                    <option value="<?php echo $logAction; ?>"<?php echo ($logAction == $request->getParam('actionFilter', '')) ? ' selected="selected"' : ''; ?>><?php echo $logAction; ?></option>
+<?php
+}
+?>
+                </select></td>
+                <td><select name="objectFilter" onchange="$('#filterForm').submit();">
+                    <option value="">- kein Filter -</option>
+<?php
+foreach ($this->logObjects as $logObjectName => $logObject) {
+?>
+                    <option value="<?php echo $logObjectName; ?>"<?php echo ($logObjectName == $request->getParam('objectFilter', '')) ? ' selected="selected"' : ''; ?>><?php echo $logObject; ?></option>
+<?php
+}
+?>
+                </select></td>
+                <td><select name="userFilter" onchange="$('#filterForm').submit();">
+                    <option value="">- kein Filter -</option>
+<?php
+foreach ($this->logUsers as $logUserId => $logUser) {
+?>
+                    <option value="<?php echo $logUserId; ?>"<?php echo ($logUserId == $request->getParam('userFilter', '')) ? ' selected="selected"' : ''; ?>><?php echo $logUser; ?></option>
+<?php
+}
+?>
+                </select></td>
+                <td><select name="dateFilter" onchange="$('#filterForm').submit();">
+                    <option value="">- kein Filter -</option>
+<?php
+foreach ($this->logDates as $logDate) {
+?>
+                    <option value="<?php echo $logDate; ?>"<?php echo ($logDate == $request->getParam('dateFilter', '')) ? ' selected="selected"' : ''; ?>><?php echo $logDate; ?></option>
+<?php
+}
+?>
+                </select></td>
+            </tr>
+<?php
+foreach ($this->log as $logId => $logEntry) {
+?>
+            <tr>
+                <td><?php echo $logId; ?></td>
+                <td><?php echo $logEntry['action']; ?></td>
+                <td><a href="<?php echo $this->url(array(
+                    'controller' => 'admin',
+                    'action' => 'object',
+                    'id' => $logEntry['objectid'],
+                )); ?>"><?php echo $logEntry['item']; ?></a></td>
+                <td><a href="<?php echo $this->url(array(
+                    'controller' => 'admin',
+                    'action' => 'user',
+                    'id' => $logEntry['userid'],
+                )); ?>"><?php echo $logEntry['user']; ?></a></td>
+                <td><?php echo $logEntry['time']; ?></td>
+            </tr>
+<?php
+}
+?>
+        </table></form></div>
+    </div>
+</div>

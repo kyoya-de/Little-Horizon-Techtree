@@ -1,0 +1,134 @@
+<?php
+$this->headTitle('Details - ' . $this->escape($this->item['dname']));
+$authSession = TechTree_Session::getNamespace('Auth');
+$this->jQuery()->javascriptCaptureStart()
+?>
+function botProtectedDelete(id, level)
+{
+    var controller = "edit";
+    var action = "remove";
+    var base = "<?php echo $this->baseUrl() ?>";
+    window.location.href = base + "/" + controller + "/" + action + "/id/" + id + "/level/" + level;
+}
+<?php
+$this->jQuery()->javascriptCaptureEnd();
+?>
+    <div class="ttCategory">
+        <div class="ttCategoryTitle">Details - <?php echo $this->escape($this->item['dname']); ?> (<?php echo $this->escape($this->item['name']); ?>) <span class="small">[ Finale Stufe: <?php echo $this->item['max_level']; ?> ]</span></div>
+        [<span class="bold">Vorraussetzungen</span>] [<?php echo $this->hyperlink('Reverse', array(
+            'controller' => 'objects',
+            'action' => 'reverse',
+            'id' => $this->item['name'],
+        )); ?>]
+<?php
+if ($authSession->loggedIn) {
+?>
+        [<?php echo $this->hyperlink('Kommentar', array(
+            'controller' => 'edit',
+            'action' => 'comment',
+            'id' => $this->item['name'],
+        )); ?>] [<?php echo $this->hyperlink('Neue Stufe', array(
+            'controller' => 'edit',
+            'action' => 'newLevel',
+            'id' => $this->item['name'],
+        ));?>]
+<?php
+}
+if (strlen($this->item['comment']) > 0) {
+?>
+        <div class="subCategory">
+            <div class="subCategoryTitle">Kommentar</div>
+            <div class="subCategoryItem"><?php echo $this->bbcode($this->item['comment']); ?></div>
+        </div>
+<?php
+}
+if (count($this->itemDepencies) == 0) {
+?>
+        <div class="subCategory">
+            <div class="subCategoryTitle">Hinweis</div>
+            <div class="subCategoryItem">Dieses Objekt besitzt keine Vorraussetzungen oder es wurden keine Eingetragen.</div>
+        </div>
+<?php
+} else {
+$typeNames = array('Gebäude', 'Forschungen');
+foreach ($this->item['levels'] as $fromLevel => $toLevel) {
+?>
+        <div class="subCategory">
+            <div class="subCategoryTitle">Stufe<?php
+    if ($toLevel == -1) {
+        echo ' ' . $fromLevel;
+    } else if ($toLevel == 0) {
+        echo 'n ' . $fromLevel . ' - ' . $this->item['max_level'];
+    } else {
+        echo 'n ' . $fromLevel . ' - ' . $toLevel;
+    }
+if ($authSession->loggedIn) {
+?> <span class="small">[<?php echo $this->hyperlink('Bearbeiten', array(
+    'controller' => 'edit',
+    'action' => 'level',
+    'id' => $this->item['name'],
+    'level' => $fromLevel,
+));?>] [<?php echo $this->hyperlink("Löschen", 'javascript:botProtectedDelete(\'' . $this->item['name'] . '\', ' . $fromLevel . ');',
+    array(
+       '"onclick' => 'return window.confirm(\'Sollen die Vorrausetzungen von \\\'' . $this->itemInfo['dname'] . ' Stufe ' . $fromLevel . '\\\' gelöscht werden?\')',
+    ));?>]</span>
+<?php
+}
+?>
+</div>
+<?php
+    foreach ($typeNames as $typeName) {
+        if (!isset($this->itemDepencies[$fromLevel][$typeName])) {
+            continue;
+        }
+        $depencies = $this->itemDepencies[$fromLevel][$typeName];
+?>
+            <div class="subCategoryItem"><?php echo $typeName; ?>
+<?php
+        $rowIndex = 0;
+        foreach ($depencies as $depencyId => $depency) {
+            $styleClass = '';
+            if (($rowIndex % 2) == 0) {
+                $styleClass = 'Dark';
+            }
+            $rowIndex++;
+?>
+                <div class="subCategoryItem<?php echo $styleClass; ?>">
+                    <div class="depencyName"><?php echo $this->hyperlink($depency['dname'], array(
+                        'controller' => 'objects',
+                        'action' => 'details',
+                        'id' => $depencyId,
+                    ));?></div>
+                    <div class="depencyLevel"><?php echo $depency['level']; ?></div>
+<?php
+            if ($typeName == 'Gebäude') {
+                $userLevel = $this->user->getUserTechLevel($depencyId);
+            } else {
+                $userLevel = $this->user->getUserTechLevel($depencyId, 'Forschungen');
+            }
+            
+            $statusOk = ($depency['level'] <= $userLevel) ? true : false;
+            $diff = abs($depency['level'] - $userLevel);
+            $title = '';
+            if ($statusOk) {
+                $title .= (($diff == 1) ? 'Eine Stufe' : $diff . ' Stufen') . ' über der benötigten.';
+            } else {
+                $title .= 'Es ' . (($diff == 1) ? 'fehlt dir noch eine Stufe' : 'fehlen dir noch ' .$diff . ' Stufen') . '.';
+            }
+?>
+                    <div class="depency<?php echo $statusOk ? 'Ok' : 'Fail'; ?>" title="<?php echo $title; ?>"></div>
+                    <div class="clear"></div>
+                </div>
+<?php
+        }
+?>
+            </div>
+<?php
+    }
+?>
+        </div>
+<?php
+}
+}
+?>
+    </div>

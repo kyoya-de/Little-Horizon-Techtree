@@ -1,0 +1,9 @@
+<option value="">- Bitte auswählen -</option>
+<?php
+    foreach ($this->objects as $object) {
+?>
+<option value="<?php echo $object['name']; ?>"><?php echo $object['dname']; ?></option>
+<?php
+    }
+?>
+<option value="<?php echo $this->id; ?>">- Am Ende -</option>

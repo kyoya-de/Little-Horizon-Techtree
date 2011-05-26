@@ -1,0 +1,35 @@
+    <div class="nav-bottom">
+        <div class="navigation">
+<?php
+    $loginSession = TechTree_Session::getNamespace('Auth');
+    if (isset($loginSession->loggedIn) && $loginSession->loggedIn) {
+?>
+            <a href="<?php echo $this->url(array(
+                'controller' => 'new',
+                'action' => 'category',
+            ), null, true); ?>">Neue Kategorie</a> |
+            <a href="<?php echo $this->url(array(
+                'controller' => 'new',
+                'action' => 'object',
+            ), null, true); ?>">Neues Objekt</a> |
+            <a href="<?php echo $this->url(array(
+                'controller' => 'bugs',
+                'action' => 'index',
+            ), null, true); ?>">Bugs einsehen</a> |
+            <a href="<?php echo $this->url(array(
+                'controller' => 'bugs',
+                'action' => 'report',
+            ), null, true); ?>">Bug melden</a>
+<?php
+    } else {
+?>
+            <div class="nav-hint">Du mußt dich einloggen um Objekte oder Kategorien erstellen oder bearbeiten zu können.</div>
+<?php
+    }
+?>
+        </div>
+        <div class="version">
+            Zend Framework: <span class="italic"><?php echo Zend_Version::VERSION; ?></span> |
+            TechTree: <span class="italic"><?php echo TechTree_Version::VERSION; ?></span>
+        </div>
+    </div>

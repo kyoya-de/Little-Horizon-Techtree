@@ -1,0 +1,15 @@
+<div class="adminNavigation">
+<h1>Administration</h1>
+    <a href="<?php echo $this->url(array(
+    'controller' => 'admin',
+    'action' => 'users',
+), null, true);?>">Benutzer</a> |
+    <a href="<?php echo $this->url(array(
+    'controller' => 'admin',
+    'action' => 'objects',
+), null, true);?>">Objekte</a> |
+    <a href="<?php echo $this->url(array(
+    'controller' => 'admin',
+    'action' => 'log',
+), null, true);?>">Log</a>
+</div>

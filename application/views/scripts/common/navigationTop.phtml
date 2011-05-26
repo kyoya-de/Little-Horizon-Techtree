@@ -1,0 +1,65 @@
+    <div class="nav-top">
+        <div class="navigation">
+            <a href="<?php echo $this->url(array(
+                'controller' => 'index',
+                'action' => 'index',
+            ), null, true); ?>">Übersicht</a> |
+            <a href="<?php echo $this->url(array(
+                'controller' => 'objects',
+                'action' => 'building',
+            ), null, true); ?>">Gebäude</a> |
+            <a href="<?php echo $this->url(array(
+                'controller' => 'objects',
+                'action' => 'research',
+            ), null, true); ?>">Forschungen</a> |
+            <a href="<?php echo $this->url(array(
+                'controller' => 'objects',
+                'action' => 'ship',
+            ), null, true); ?>">Raumschiffe</a> |
+            <a href="<?php echo $this->url(array(
+                'controller' => 'objects',
+                'action' => 'defense',
+            ), null, true); ?>">Verteidigung</a> |
+            <a href="<?php echo $this->url(array(
+                'controller' => 'objects',
+                'action' => 'search',
+            ), null, true); ?>">Suche</a> |
+            <a href="<?php echo $this->url(array(
+                'controller' => 'index',
+                'action' => 'statistics',
+            ), null, true); ?>">Statistik</a>
+        </div>
+        <div class="account">
+<?php
+    $loginSession = TechTree_Session::getNamespace('Auth');
+    if(!isset($loginSession->loggedIn) || !$loginSession->loggedIn)
+    {
+?>
+            <a href="<?php echo $this->url(array(
+                'controller' => 'user',
+                'action' => 'login',
+            ), null, true); ?>">Login</a> |
+            <a href="<?php echo $this->url(array(
+                'controller' => 'user',
+                'action' => 'register',
+            ), null, true); ?>">Registrieren</a>
+
+<?php
+    }
+    else
+    {
+?>
+            <a href="<?php echo $this->url(array(
+                'controller' => 'user',
+                'action' => 'settings',
+            ), null, true); ?>">Account</a> |
+            <a href="<?php echo $this->url(array(
+                'controller' => 'user',
+                'action' => 'logout',
+            ), null, true); ?>">Logout</a>
+<?php
+    }
+?>
+
+        </div>
+    </div>

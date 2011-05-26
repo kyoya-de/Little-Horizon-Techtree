@@ -1,0 +1,51 @@
+<?php
+    $frontController = Zend_Controller_Front::getInstance();
+    $request = $frontController->getRequest();
+    $this->headTitle('Raumschiffe');
+?>
+        <div class="ttCategory">
+            <div class="ttCategoryTitle">Raumschiffe</div>
+            <form action="<?php echo $this->url(array(
+                'controller' => $request->getParam('controller'),
+                'action' => $request->getParam('action'),
+            ), null, true); ?>" method="post" id="category-changer"><select name="category" onChange="document.getElementById('category-changer').submit();">
+                    <option class="italic" value="">-- Kategorieauswahl --</option>
+<?php
+    foreach($this->typeCategories as $typeCategory)
+    {
+?>
+                    <option value="<?php echo $typeCategory['name']; ?>"<?php echo ($request->getParam('category') === $typeCategory['name']) ? ' selected="selected"' : ''; ?>><?php echo $typeCategory['dname']; ?></option>
+<?php
+    }
+?>
+                </select></form>
+<?php
+    foreach($this->typeItems as $itemCategory => $categoryItems)
+    {
+?>
+            <div class="subCategory">
+                <div class="subCategoryTitle"><?php echo $itemCategory; ?></div>
+<?php
+        $index = 0;
+        foreach($categoryItems as $categoryItem)
+        {
+            $index++;
+            if (($index % 2) == 1) {
+                $styleSuffix = 'Dark';
+            } else {
+                $styleSuffix = '';
+            }
+?>
+                <div class="subCategoryItem<?php echo $styleSuffix; ?> h16"><a href="<?php echo $this->url(array(
+                    'controller' => 'objects',
+                    'action' => 'details',
+                    'id' => $categoryItem['name'],
+                ), null, true); ?>"><?php echo $categoryItem['dname']; ?></a> (<?php echo $categoryItem['name']; ?>)</div>
+<?php
+        }
+?>
+            </div>
+<?php
+    }
+?>
+        </div>

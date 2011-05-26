@@ -1,0 +1,85 @@
+<?php
+$this->headTitle('Suche');
+$searchURL = $this->url(
+    array(
+        'controller' => 'objects',
+        'action' => 'search-ajax',
+        'searchTerm' => '',
+    )
+);
+
+$jsOnLoad = <<<EOT
+$('#searchTerm').keyup(
+    function(ui) {
+        if (ui.target.value.length > 2) {
+            $('#searchResult').slideUp(100);
+            doAjaxSearch();
+        }
+    });
+EOT;
+$this->jQuery()->addOnLoad($jsOnLoad);
+
+if (isset($this->searchTerm)) {
+    $this->jQuery()->addOnLoad("doSearch('" . $this->searchTerm . "')");
+}
+?>
+        <div class="ttCategory">
+            <div class="ttCategoryTitle">Suche</div>
+            <form action="<?php
+echo $this->url(
+    array(
+        'controller' => 'objects',
+        'action' => 'search',
+    )
+);
+?>" method="post" enctype="multipart/formdata">
+                <div class="subCategory">
+                    <div class="subCategoryTitle">Suche nach</div>
+                    <div class="subCategoryItem"><input type="text" name="searchTerm" size="60" id="searchTerm" value="<?php echo $this->searchTerm; ?>" /> <img src="<?php echo $this->baseUrl(); ?>/images/throbber.gif" alt="" id="searchThrobber" style="display:none;" /></div>
+                </div>
+            </form>
+            <div class="subCategory" id="searchResult" style="display:none;">
+            </div>
+        </div>
+<script type="text/javascript">
+var term = '';
+var sTypeCheck = '';
+var obj = document.getElementById('searchTerm');
+obj.focus();
+var timer = window.setTimeout("void(0)", 1);
+function doSearch(value)
+{
+	$('#searchThrobber').fadeIn(100);
+    $.get('<?php echo $searchURL; ?>' + value, function(objResult) {
+        $('#searchResult').slideDown(100);
+        $('#searchResult').html(objResult);
+        $('#searchThrobber').fadeOut(100);
+    });
+}
+
+function doAjaxSearch()
+{
+    if(!obj)
+    {
+        return false;
+    }
+    if(obj.value != sTypeCheck)
+    {
+        window.clearTimeout(timer);
+        sTypeCheck = obj.value;
+        timer = window.setTimeout("doAjaxSearch()", 750);
+        return true;
+    }
+    if((obj.value != term) && (obj.value != ""))
+    {
+        var parameters = {
+            searchTerm: obj.value
+        };
+        doSearch(obj.value);
+    }
+    term = obj.value;
+    return true;
+}
+
+doAjaxSearch();
+</script>

@@ -1,0 +1,47 @@
+<?php $this->headTitle('Übersicht'); ?>
+<div class="ttCategory">
+    <div class="ttCategoryTitle">Übersicht - TechTree <?php echo TechTree_Version::VERSION; ?> (<?php echo TechTree_Version::CODENAME; ?>)</div>
+    <div class="subCategory">
+        <div class="subCategoryTitle">Kontakt</div>
+        <div class="subCategoryItem">
+            <div class="subCategoryItemDark">InGame: Darky</div>
+            <div class="subCategoryItem">ICQ: 411045128</div>
+            <div class="subCategoryItemDark">Skype: stkrenz</div>
+        </div>
+    </div>
+    <div class="subCategory">
+        <div class="subCategoryTitle">Ein kleine Bitte</div>
+        <div class="subCategoryItemDark">Es gab einen Fehler bei der Registrierung.
+            Dem neuen Account wurde keine ID zugeteilt, somit war es möglich, dass sich mehrere User ihre Techs und Planeten "teilten".
+            Dieser Fehler wurde behoben und allen Accounts ohne ID, eine eindeutige zugeteilt.
+        </div>
+        <div class="subCategoryItem">Einige von euch nutzen schwache (zu kurz oder zu einfach), bitte wählt eine andere ID aus.</div>
+        <div class="subCategoryItemDark">Diese IDs werden beibehalten, da es so möglich für eine "Speed"-Runde extra Techs zu speichern.</div>
+    </div>
+    <div class="subCategory">
+        <div class="subCategoryTitle">Was hat sich getan?</div>
+        <div class="subCategoryItem">
+            <div class="subCategoryItemDark">Performance Verbesserungen, durch komplettes Refactoring.</div>
+            <div class="subCategoryItem">Verbesserte Statistik (noch nicht final).</div>
+            <div class="subCategoryItemDark">Zwei neue Styles auswählbar (Blau und Rot).</div>
+            <div class="subCategoryItem">Sämtliche Styleinformationen liegen im Stylesheet. <br/>
+            Dadurch ist es möglich eigene Styles zu erstellen.<br/>
+            <span class="small">Bei gefallen, werden sie in den TechTree ausgenommen.</span></div>
+            <div class="subCategoryItemDark">Bearbeiten und Löschen nur nach Login möglich.</div>
+            <div class="subCategoryItem">Rechtesystem für die Benutzer (noch nicht final).</div>
+            <div class="subCategoryItemDark">Admin-Interface zur Verwaltung der Benutzer und Objekte.</div>
+            <div class="subCategoryItem">Loggen von verändernden Aktionen.<br/>
+                Geloggt wird: Benutzer, Aktion, Datum und Uhrzeit.</div>
+            <div class="subCategoryItemDark">Formular für Bug-Meldungen inkl. kleinem Bug-Tracker.</div>
+        </div>
+    </div>
+    <div class="subCategory">
+        <div class="subCategoryTitle">Was wird es nie geben?</div>
+        <div class="subCategoryItem">
+            <div class="subCategoryItemDark">Automatisierte Anbindung an <?php echo $this->hyperlink('Little Horizon', 'http://horizon.building-better-worlds.org/', array('onclick' => 'window.open(this.href);return false;')); ?>.</div>
+            <div class="subCategoryItem">Schnittstelle für eine Automatisierung von außen.</div>
+            <div class="subCategoryItemDark">Anzeige der absoluten Vorraussetzungen eines Objektes.<br/>
+                (Die Vorraussetzungen der Vorraussetzungen der Vorraus...)</div>
+        </div>
+    </div>
+</div>

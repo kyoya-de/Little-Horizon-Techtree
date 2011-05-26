@@ -1,0 +1,100 @@
+<?php
+$this->headTitle('Gemeldete Fehler');
+$authSession = TechTree_Session::getNamespace('Auth');
+?>
+    <div class="ttCategory">
+        <div class="ttCategoryTitle">Bugs</div>
+<?php
+foreach ($this->bugs as $bugId => $bug) {
+    switch ($bug['status']) {
+        case 'closed':
+            $bugStatus = 'Geschlossen';
+            break;
+        case 'progress':
+            $bugStatus = 'Wird Bearbeitet';
+            break;
+        case 'feedback':
+            $bugStatus = 'Warte auf Rückantwort';
+            break;
+        case 'resolved':
+            $bugStatus = 'Erledigt';
+            break;
+        case 'open':
+        default:
+            $bugStatus = 'Offen';
+            break;
+    }
+?>
+        <div class="subCategory">
+            <div class="subCategoryTitle bugTitle <?php echo $this->escape($bug['status']); ?>"><?php echo '#' . $bugId; ?> <?php echo $bug['title'];?></div>
+            <div class="subCategoryItemDark">
+                <div class="bugsLabel">Reporter:</div>
+                <div class="bugsValue"><?php echo $bug['reporter']; ?></div>
+                <div class="clear"></div>
+            </div>
+            <div class="subCategoryItem">
+                <div class="bugsLabel">Status:</div>
+                <div class="bugsValue"><?php echo $this->states[$bug['status']]; ?></div>
+                <div class="clear"></div>
+            </div>
+            <div class="subCategoryItemDark">
+                <div class="bugsLabel">Bearbeiter:</div>
+                <div class="bugsValue"><?php echo $this->admins[$bug['assigned']]; ?></div>
+                <div class="clear"></div>
+            </div>
+            <div class="subCategoryItem">
+                <div class="bugsLabel">Beschreibung:</div>
+                <div class="bugsValue"><?php echo $bug['description']; ?></div>
+                <div class="clear"></div>
+            </div>
+<?php
+    if ($authSession->accountType == 'admin') {
+?>
+            <div class="subCategoryItem">
+                <form action="<?php echo $this->url(array(
+                    'controller' => 'bugs',
+                    'action' => 'assign',
+                )); ?>" method="post" enctype="multipart/formdata">
+                    <input type="hidden" name="bugId" value="<?php echo $bugId; ?>"/>
+                    <div class="bugsLabel">Zuweisen:</div>
+                    <div class="bugsValue"><select name="adminId">
+<?php
+        foreach ($this->admins as $adminId => $adminName) {
+?>
+                        <option value="<?php echo $adminId; ?>"<?php echo ($adminId == $bug['assigned']) ? ' selected="selected"' : ''; ?>><?php echo $adminName; ?></option>
+<?php
+        }
+?>
+                        </select>
+                        <input type="submit" value="Zuweisen" /></div>
+                    <div class="clear"></div>
+                </form>
+            </div>
+            <div class="subCategoryItem">
+                <form action="<?php echo $this->url(array(
+                    'controller' => 'bugs',
+                    'action' => 'status',
+                )); ?>" method="post" enctype="multipart/formdata">
+                    <input type="hidden" name="bugId" value="<?php echo $bugId; ?>"/>
+	                <div class="bugsLabel">Status:</div>
+	                <div class="bugsValue"><select name="status">
+<?php
+        foreach ($this->states as $stateId => $stateName) {
+?>
+                        <option value="<?php echo $stateId; ?>"<?php echo ($stateId == $bug['status']) ? ' selected="selected"' : ''; ?>><?php echo $stateName; ?></option>
+<?php
+        }
+?>
+                        </select>
+                        <input type="submit" value="Setzen" /></div>
+                    <div class="clear"></div>
+                </form>
+            </div>
+<?php
+    }
+?>
+        </div>
+<?php
+}
+?>
+    </div>

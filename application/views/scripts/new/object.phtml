@@ -1,0 +1,93 @@
+<?php
+$this->headTitle('Neues Objekt');
+?>
+<script type="text/javascript">
+<?php $this->jQuery()->javascriptCaptureStart(); ?>
+var baseUrl = '<?php echo $this->url(array('controller' => 'ajax'), null, true); ?>';
+var id = '<?php echo $this->item['name']; ?>';
+function loadCategories(value)
+{
+    if (value == '') {
+        $('#categorySelect').html('<option value="">Erst Klasse auswählen</option>').attr('disabled', 'disabled').val('');
+        $('#objectSelect').html('<option value="">Erst Kategorie auswählen</option>').attr('disabled', 'disabled').val('');
+        $('#send').attr('disabled', 'disabled');
+        return;
+    }
+    $('#categorySelect').load(baseUrl + '/getCategories/type/' + value).removeAttr('disabled');
+    $('#objectSelect').html('<option value="">Erst Kategorie auswählen</option>').attr('disabled', 'disabled').val('');
+    $('#send').attr('disabled', 'disabled');
+}
+function loadObjects(value)
+{
+    if (value == '') {
+        $('#objectSelect').html('<option value="">Erst Kategorie auswählen</option>').attr('disabled', 'disabled').val('');
+        $('#send').attr('disabled', 'disabled');
+        return;
+    }
+    $('#objectSelect').load(baseUrl + '/getNewObjects/category/' + value).removeAttr('disabled');
+    $('#send').attr('disabled', 'disabled');
+}
+
+function checkSubmit()
+{
+    if ($('#objectSelect').val() == '' || $('#objectId').val() == '' || $('#objectName').val() == '') {
+        $('#send').attr('disabled', 'disabled');
+    } else {
+        $('#send').removeAttr('disabled');
+    }
+}
+<?php $this->jQuery()->javascriptCaptureEnd(); ?>
+</script>
+    <div class="ttCategory">
+        <div class="ttCategoryTitle">Neues Objekt</div>
+        <div class="subCategory">
+            <form action="<?php echo $this->url(array(
+                'controller' => 'new',
+                'action' => 'object',
+            ));?>" method="post">
+            <div class="subCategoryItem">
+                <div class="form-input-label">Objekt-ID:</div>
+                <div class="form-input"><input type="text" name="objectId" onkeyup="checkSubmit();" id="objectId" class="w300"/></div>
+                <div class="clear"></div>
+                <div class="form-input-label">Objektname:</div>
+                <div class="form-input"><input type="text" name="objectName" onkeyup="checkSubmit();" id="objectName" class="w300"/></div>
+                <div class="clear"></div>
+                <div class="form-input-label">Rasse:</div>
+                <div class="form-input"><select name="race">
+<?php
+    foreach (TechTree_Utils::getItemRaces() as $raceId => $raceName) {
+?>
+                    <option value="<?php echo $raceId; ?>"><?php echo $raceName; ?></option>
+<?php
+    }
+?>
+                </select></div>
+                <div class="clear"></div>
+                <div class="form-input-label">Klasse:</div>
+                <div class="form-input"><select id="typeSelect" onchange="loadCategories(this.value);" class="w300" name="type">
+                    <option value="">- Bitte auswählen -</option>
+<?php
+    foreach ($this->types as $type) {
+?>
+    <option value="<?php echo $type['name']; ?>"><?php echo $type['dname']; ?></option>
+<?php
+    }
+?></select></div>
+                <div class="clear"></div>
+                <div class="form-input-label">Kategorie:</div>
+                <div class="form-input"><select id="categorySelect" onchange="loadObjects(this.value);" disabled="disabled" class="w300" name="category">
+                    <option value="">Erst Klasse auswählen</option>
+                </select></div>
+                <div class="clear"></div>
+                <div class="form-input-label">Einsortieren vor:</div>
+                <div class="form-input"><select id="objectSelect" disabled="disabled" onchange="checkSubmit();" class="w300" name="insertBefore">
+                    <option value="">Erst Kategorie auswählen</option>
+                </select></div>
+                <div class="clear"></div>
+                <div class="form-input-label">&nbsp;</div>
+                <div class="form-input"><input type="submit" value="Erstellen" id="send" disabled="disabled"/></div>
+                <div class="clear"></div>
+            </div>
+            </form>
+        </div>
+    </div>

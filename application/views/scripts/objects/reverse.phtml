@@ -1,0 +1,76 @@
+<?php
+$authSession = TechTree_Session::getNamespace('Auth');
+$this->headTitle('Reverse - ' . $this->escape($this->item['dname']));
+?>
+    <div class="ttCategory">
+        <div class="ttCategoryTitle">Details - <?php echo $this->escape($this->item['dname']); ?> (<?php echo $this->escape($this->item['name']); ?>) <span class="small">[ Finale Stufe: <?php echo $this->item['max_level']; ?> ]</span></div>
+        [<?php echo $this->hyperlink('Vorraussetzungen', array(
+            'controller' => 'objects',
+            'action' => 'details',
+            'id' => $this->item['name'],
+        )); ?>] [<span class="bold">Reverse</span>]
+<?php
+if ($authSession->loggedIn) {
+?>
+        [<?php echo $this->hyperlink('Kommentar', array(
+            'controller' => 'edit',
+            'action' => 'comment',
+            'id' => $this->item['name'],
+        )); ?>] [<?php echo $this->hyperlink('Neue Stufe', array(
+            'controller' => 'edit',
+            'action' => 'newLevel',
+            'id' => $this->item['name'],
+        ));?>]
+<?php
+}
+if (count($this->items) == 0) {
+?>
+        <div class="subCategory">
+            <div class="subCategoryTitle">Hinweis</div>
+            <div class="subCategoryItem italic">Von diesem Objekt ist kein anderes Objekt abhängig.</div>
+        </div>
+<?php
+}
+$typeNames = array('Gebäude', 'Forschungen', 'Raumschiffe', 'Verteidigung');
+foreach ($this->items as $level => $levelTypes) {
+?>
+        <div class="subCategory">
+            <div class="subCategoryTitle">ab Stufe <?php echo $level; ?></div>
+<?php
+    foreach ($typeNames as $typeName) {
+        if (!isset($levelTypes[$typeName])) {
+            continue;
+        }
+?>
+            <div class="subCategoryItem">
+            <?php echo $typeName; ?>
+<?php
+        $index = 0;
+        foreach ($levelTypes[$typeName] as $objectId => $object) {
+            $styleSuffix = '';
+            if (($index % 2) == 0) {
+                $styleSuffix = 'Dark';
+            }
+?>
+                <div class="subCategoryItem<?php echo $styleSuffix; ?>">
+                    <div class="revDepencyName"><a href="<?php echo $this->url(array(
+                        'controller' => 'objects',
+                        'action' => 'details',
+                        'id' => $objectId,
+                    ), null, true); ?>"><?php echo $object['dname']; ?></a></div>
+                    <div class="revDepencyLevel"><?php echo $object['level']; ?></div>
+                    <div class="clear"></div>
+                </div>
+<?php
+            $index++;
+        }
+?>
+            </div>
+<?php
+    }
+?>
+        </div>
+<?php
+}
+?>
+    </div>

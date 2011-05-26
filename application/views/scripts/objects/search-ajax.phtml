@@ -1,0 +1,23 @@
+                <div class="subCategoryTitle">Suchergebnis</div>
+<?php
+if (count($this->searchResults) > 0) {
+    foreach ($this->searchResults as $itemId => $itemName) {
+?>
+                <div class="subCategoryItem"><a href="<?php
+    echo $this->url(
+        array(
+            'controller' => 'objects',
+            'action' => 'details',
+            'id' => $itemId,
+        ),
+        null,
+        true
+    );
+?>"><?php echo $this->escape($itemName); ?></a> (<?php echo $this->escape($itemId); ?>)</div>
+<?php
+    }
+} else {
+?>
+                <div class="subCategoryItem"><span class="italic">- keine Einträge gefunden -</span></div>
+<?php
+}

@@ -1,0 +1,119 @@
+<?php
+$this->headTitle('Account Einstellungen');
+?>
+        <div class="ttCategory">
+            <div class="ttCategoryTitle">Account-Einstellungen</div>
+            <div class="subCategory">
+                <div class="subCategoryTitle">Style und UserTechs ID</div>
+                <div class="subCategoryItem"><?php echo $this->basicSettingsForm; ?></div>
+            </div>
+            <div class="subCategory">
+                <div class="subCategoryTitle">Passwort ändern</div>
+                <div class="subCategoryItem"><?php echo $this->passwordForm; ?></div>
+            </div>
+            <div class="subCategory">
+                <div class="subCategoryTitle">Planeten verwalten</div>
+                <div class="subCategoryItem"><?php echo $this->managePlanetsForm; ?></div>
+            </div>
+            <div class="subCategory">
+                <div class="subCategoryTitle">Techwerte importieren</div>
+                <div class="subCategoryItem">
+                    <span class="bold">Anleitung:</span>
+                    Markiere den gesamten Text der Seite (Strg + A) der jeweiligen Kategorie
+                    des jeweiligen Typs (Gebäude bzw. Forschungen), Kopiere ihn (Strg + C) und
+                    füge ihn in das Textfeld ein (Strg + V). Klicke abschließen auf 'Importieren'.
+                </div>
+                <div class="subCategoryItem">
+                    <span class="bold">Hinweis:</span> Achte bei den Gebäuden darauf,
+                    dass du den richtigen Planeten ausgewählt hast.
+                </div>
+                <div class="subCategoryItem"><?php echo $this->userTechsForm; ?></div>
+            </div>
+<?php
+    if (isset($this->parsedUserTechs)) {
+?>
+            <div class="subCategory">
+                <div class="subCategoryTitle">Die Daten wurden wie folgt eingetragen:</div>
+<?php
+        $index = 0;
+        foreach ($this->parsedUserTechs as $objectId => $objectLevel) {
+            $styleSuffix = '';
+            if (($index % 2) == 0) {
+                $styleSuffix = 'Dark';
+            }
+?>
+                <div class="subCategoryItem<?php echo $styleSuffix; ?>">
+                    <div class="float-left align-left"><?php echo $this->hyperlink($objectId, array(
+                        'controller' => 'objects',
+                        'action' => 'details',
+                        'id' => $objectId,
+                    )); ?></div>
+                    <div class="align-right"><?php echo $objectLevel; ?></div>
+                    <div class="clear"></div>
+                </div>
+<?php
+        }
+?>
+            </div>
+<?php
+    }
+?>
+            <div class="subCategory">
+                <div class="subCategoryTitle">Planeten Techs</div>
+<?php
+    $index = 0;
+    foreach($this->userSettings['userLevelPlanet'] as $objectId => $object)
+    {
+        $index++;
+        if(($index % 2) == 0)
+        {
+            $styleSuffix = 'Dark';
+        }
+        else
+        {
+            $styleSuffix = '';
+        }
+?>
+                <div class="subCategoryItem<?php echo $styleSuffix; ?>">
+                    <div class="float-left align-left"><?php echo $this->hyperlink($object['dname'], array(
+                        'controller' => 'objects',
+                        'action' => 'details',
+                        'id' => $objectId,
+                    )); ?></div>
+                    <div class="align-right"><?php echo $object['level']; ?></div>
+                    <div class="clear"></div>
+                </div>
+<?php
+    }
+?>
+            </div>
+            <div class="subCategory">
+                <div class="subCategoryTitle">Forschungen</div>
+<?php
+    $index = 0;
+    foreach($this->userSettings['userLevelResearch'] as $objectId => $object)
+    {
+        $index++;
+        if(($index % 2) == 0)
+        {
+            $styleSuffix = 'Dark';
+        }
+        else
+        {
+            $styleSuffix = '';
+        }
+?>
+                <div class="subCategoryItem<?php echo $styleSuffix; ?>">
+                    <div class="float-left align-left"><?php echo $this->hyperlink($object['dname'], array(
+                        'controller' => 'objects',
+                        'action' => 'details',
+                        'id' => $objectId,
+                    )); ?></div>
+                    <div class="float-right align-right"><?php echo $object['level']; ?></div>
+                    <div class="clear"></div>
+                </div>
+<?php
+    }
+?>
+            </div>
+        </div>

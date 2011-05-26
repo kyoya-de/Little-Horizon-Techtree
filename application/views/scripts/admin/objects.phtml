@@ -1,0 +1,49 @@
+<?php $this->headTitle('Objekte'); ?>
+<div class="ttCategory">
+    <div class="ttCategoryTitle">Admin</div>
+    <div class="adminCategory">
+<?php
+foreach ($this->tree as $root) {
+?>
+        <div class="l1"><?php echo $this->escape($root['dname']);?><span class="last-update"><?php echo sprintf('[LFT %04u - RGT: %04u]', $root['lft'], $root['rgt']); ?></span></div>
+<?php
+    foreach ($root['childs'] as $typeName => $type) {
+?>
+        <div class="l2 type"><?php echo $this->escape($type['dname']);?> (<?php echo $typeName; ?>)<span class="last-update"><?php echo sprintf('[LFT %04u - RGT: %04u]', $type['lft'], $type['rgt']); ?></span></div>
+<?php
+        $index = 0;
+        foreach ($type['childs'] as $catName => $category) {
+            $index++;
+            if (($index % 2) == 0) {
+                $darkClass = ' dark';
+            } else {
+                $darkClass = '';
+            }
+?>
+        <div class="l3<?php echo $darkClass; ?>"><a href="<?php echo $this->url(array(
+            'controller' => 'admin',
+            'action' => 'category',
+            'id' => $category['id'],
+        ));?>"><?php echo $this->escape($category['dname']);?></a> (<?php echo $catName; ?>)<span class="last-update"><?php echo sprintf('[LFT %04u - RGT: %04u]', $category['lft'], $category['rgt']); ?></span></div>
+<?php
+            foreach ($category['childs'] as $itemName => $item) {
+                $index++;
+                if (($index % 2) == 0) {
+                    $darkClass = ' dark';
+                } else {
+                    $darkClass = '';
+                }
+?>
+        <div class="l4<?php echo $darkClass; ?>"><a href="<?php echo $this->url(array(
+            'controller' => 'admin',
+            'action' => 'object',
+            'id' => $item['id'],
+        ));?>"><?php echo $this->escape($item['dname']);?></a> (<?php echo $itemName; ?>)<span class="last-update"><?php echo sprintf('[LFT %04u - RGT: %04u]', $item['lft'], $item['rgt']); ?></span></div>
+<?php
+            }
+        }
+    }
+}
+?>
+    </div>
+</div>

@@ -1,0 +1,188 @@
+<?php
+$this->headTitle('Neue Stufe - ' . $this->escape($this->item['dname']));
+?>
+<script type="text/javascript">
+<?php $this->jQuery()->javascriptCaptureStart(); ?>
+var baseUrl = '<?php echo $this->url(array('controller' => 'ajax'), null, true); ?>';
+var id = '<?php echo $this->item['name']; ?>';
+function loadCategories(value)
+{
+    if (value == '') {
+        $('#categorySelect').html('<option value="">Erst Klasse auswählen</option>').attr('disabled', 'disabled');
+        $('#objectSelect').html('<option value="">Erst Kategorie auswählen</option>').attr('disabled', 'disabled');
+        $('#newLevel').attr('disabled', 'disabled');
+        return;
+    }
+    $('#categorySelect').load(baseUrl + '/getCategories/type/' + value).removeAttr('disabled');
+    $('#objectSelect').html('<option value="">Erst Kategorie auswählen</option>').attr('disabled', 'disabled');
+    $('#addButton').attr('disabled', 'disabled');
+}
+function loadObjects(value)
+{
+    if (value == '') {
+        $('#objectSelect').html('<option value="">Erst Kategorie auswählen</option>').attr('disabled', 'disabled');
+        $('#addButton').attr('disabled', 'disabled');
+        return;
+    }
+    $('#addButton').attr('disabled', 'disabled');
+    $('#objectSelect').load(baseUrl + '/getObjects/category/' + value).removeAttr('disabled');
+}
+
+function enableAddButton(value)
+{
+    if ($('#objectSelect').val() == '' || $('#newLevel').val() == '') {
+        $('#addButton').attr('disabled', 'disabled');
+        return;
+    }
+    
+    $('#addButton').removeAttr('disabled');
+}
+function addRequirement()
+{
+    var selectBox = $('#objectSelect').get(0);
+    var index = selectBox.selectedIndex;
+    var newOption = '<option value="' + selectBox.value + ':' + $('#newLevel').val() + '">' + $(selectBox.options[index]).html() + ' - Stufe ' + $('#newLevel').val() + '</option>';
+    $('#requirements').html($('#requirements').html() + newOption);
+    $('#categorySelect').html('<option value="">Erst Klasse auswählen</option>').attr('disabled', 'disabled');
+    $('#objectSelect').html('<option value="">Erst Kategorie auswählen</option>').attr('disabled', 'disabled');
+    $('#typeSelect').get(0).selectedIndex = 0;
+    $('#newLevel').val('');
+    enableAddButton();
+    checkDeleteButton();
+}
+function checkDeleteButton()
+{
+    var requireBox = $('#requirements').get(0);
+    if (requireBox.selectedIndex < 0) {
+        $('#delButton').attr('disabled', 'diables');
+        return;
+    }
+    $('#delButton').removeAttr('disabled');
+}
+function removeRequirement()
+{
+    var requireBox = $('#requirements').get(0);
+    var selIndex = requireBox.selectedIndex;
+    if (selIndex < 0) {
+        return;
+    }
+    requireBox.options[selIndex] = null;
+    if (requireBox.options.length >= 0) {
+        requireBox.selectedIndex = 0;
+    }
+    checkDeleteButton();
+}
+function buildRequirementList()
+{
+    var requireBox = $('#requirements').get(0);
+    var isFirst = true;
+    var require = '';
+    for (var index = 0; index < requireBox.options.length; index++) {
+        if (!isFirst) {
+            require += ',';
+        }
+        require += requireBox.options[index].value;
+        isFirst = false;
+    }
+    $('#requireList').val(require);
+}
+function checkSubmit()
+{
+    if ($('#level').val() == '') {
+        $('#send').attr('disabled', 'disabled');
+    } else {
+        $('#send').removeAttr('disabled');
+    }
+}
+function showImportDialog()
+{
+    $('#importDialog').dialog({
+        modal: true,
+        buttons: {
+            Ok: function() {
+                $.ajax({
+                    type: 'POST',
+                    url: baseUrl + '/parse/id/' + id + '/level/' + $('#level').val(),
+                    data: {
+                        'data': $('#pastedText').val()
+                    },
+                    success: function(objResult){
+                        document.location.href = objResult.url;
+                    },
+                    dataType: 'json'
+                });
+                $(this).dialog('close');
+            }
+        },
+        height: 440,
+        width: 540
+    });
+}
+<?php $this->jQuery()->javascriptCaptureEnd(); ?>
+</script>
+    <div class="ttCategory">
+        <div class="ttCategoryTitle">Details - <?php echo $this->escape($this->item['dname']); ?> (<?php echo $this->escape($this->item['name']); ?>) <span class="small">[ Finale Stufe: <?php echo $this->item['max_level']; ?> ]</span></div>
+        [<?php echo $this->hyperlink('Vorraussetzungen', array(
+            'controller' => 'objects',
+            'action' => 'details',
+            'id' => $this->item['name'],
+        )); ?>] [<?php echo $this->hyperlink('Reverse', array(
+            'controller' => 'objects',
+            'action' => 'reverse',
+            'id' => $this->item['name'],
+        )); ?>] [<?php echo $this->hyperlink('Kommentar', array(
+            'controller' => 'edit',
+            'action' => 'comment',
+            'id' => $this->item['name'],
+        ));?>] [<span class="bold">Neue Stufe</span>]
+        <div class="subCategory"><form action="<?php echo $this->url(array(
+            'controller' => 'edit',
+            'action' => 'level',
+            'id' => $this->item['name']
+), null, true); ?>" method="post" enctype="multipart/formdata" onsubmit="buildRequirementList();">
+            <input type="hidden" name="requireList" id="requireList" value=""/>
+            <div class="subCategoryTitle">Stufe:</div>
+            <div class="subCategoryItem"><input type="text" name="level" id="level" onkeyup="checkSubmit();"/></div>
+            <div class="subCategoryTitle">Vorraussetzungen:</div>
+            <div class="subCategoryItem">
+                <select id="requirements" name="requirements" size="10" onchange="checkDeleteButton();"></select>
+                <input id="send" type="submit" value="Eintragen" disabled="disabled">
+                <input id="import" type="button" value="Import" onclick="showImportDialog();">
+            </div>
+        </form></div>
+        <div class="subCategory">
+            <div class="subCategoryItem">
+                <div class="form-input-label">Klasse:</div>
+                <div class="form-input"><select id="typeSelect" onchange="loadCategories(this.value);" class="w300">
+                    <option value="">- Bitte auswählen -</option>
+<?php
+    foreach ($this->types as $type) {
+?>
+    <option value="<?php echo $type['name']; ?>"><?php echo $type['dname']; ?></option>
+<?php
+    }
+?></select></div>
+                <div class="clear"></div>
+                <div class="form-input-label">Kategorie:</div>
+                <div class="form-input"><select id="categorySelect" onchange="loadObjects(this.value);" disabled="disabled" class="w300">
+                    <option value="">Erst Klasse auswählen</option>
+                </select></div>
+                <div class="clear"></div>
+                <div class="form-input-label">Objekt:</div>
+                <div class="form-input"><select id="objectSelect" disabled="disabled" onchange="enableAddButton();" class="w300">
+                    <option value="">Erst Kategorie auswählen</option>
+                </select></div>
+                <div class="clear"></div>
+                <div class="form-input-label">Stufe:</div>
+                <div class="form-input"><input type="text" id="newLevel" maxlength="2" onkeyup="enableAddButton();"/></div>
+                <div class="clear"></div>
+                <div class="form-input-label">&nbsp;</div>
+                <div class="form-input"><input type="button" value="Einfügen" onclick="addRequirement();" id="addButton" disabled="disabled"/> <input type="button" value="Löschen" onclick="removeRequirement();" id="delButton" disabled="disabled"/></div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <div id="importDialog" title="Vorraussetzungscheck Import">
+        <div class="bold">Füge hier die kopierten Daten des Vorraussetzungschecks ein.</div>
+        <textarea id="pastedText" rows="15" cols="80"></textarea>
+    </div>

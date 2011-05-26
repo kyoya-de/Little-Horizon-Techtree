@@ -1,0 +1,58 @@
+<?php
+$this->doctype(Zend_View_Helper_Doctype::XHTML1_TRANSITIONAL);
+$this->headTitle('Little Horizon - Community TechTree v4 (' . TechTree_Version::CODENAME . ')', Zend_View_Helper_Placeholder_Container::PREPEND)->setSeparator(' » ');
+
+$this->jQuery()->setLocalPath($this->baseUrl() . '/js/jquery-1.4.2.min.js');
+
+$this->jQuery()->setUiLocalPath($this->baseUrl() . '/js/jquery-ui-1.8.custom.min.js');
+$this->jQuery()->uiEnable();
+
+$authSession = TechTree_Session::getNamespace('Auth');
+if(isset($authSession->style)) {
+    $styleSheet = '/css/' . $authSession->style . '.css';
+} else {
+    $styleSheet = '/css/blue.css';
+}
+
+if ($authSession->accountType == 'admin') {
+    $this->jQuery()->addStylesheet($this->baseUrl() . '/css/admin/admin-nav.css');
+    if (Zend_Controller_Front::getInstance()->getRequest()->getControllerName() == 'admin') {
+        $this->jQuery()->addStylesheet($this->baseUrl() . '/css/admin/admin.css');
+    }
+}
+
+$this->jQuery()->addStylesheet($this->baseUrl() . $styleSheet);
+$this->jQuery()->addStylesheet($this->baseUrl() . '/css/ui-lightness/jquery-ui-1.8.custom.css');
+
+echo '<?xml version="1.0" ?>' . "\n";
+
+echo $this->doctype();
+?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <?php echo $this->headTitle(); ?>
+
+    <?php echo $this->jQuery(); ?>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body>
+<?php echo $this->partial('common/navigationTop.phtml'); ?>
+    <div class="center-content">
+        <h3><img src="<?php echo $this->baseUrl(); ?>/images/tree.png" alt="tree.png" border="0" style="vertical-align: middle;" /> Little Horizon - Community TechTree</h3>
+<?php echo $this->layout()->content; ?>
+    </div>
+<?php echo $this->partial('common/navigationBottom.phtml'); ?>
+
+<?php echo $this->partial('common/zendLogo.phtml'); ?>
+
+<?php echo $this->partial('common/planetSelect.phtml'); ?>
+
+<?php
+if ($authSession->accountType == 'admin') {
+    echo $this->partial('admin/navigation.phtml');
+}
+?>
+
+</body>
+</html>

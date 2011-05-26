@@ -1,0 +1,60 @@
+<?php
+$this->headTitle('Neue Kategorie');
+?>
+<script type="text/javascript">
+<?php $this->jQuery()->javascriptCaptureStart(); ?>
+var baseUrl = '<?php echo $this->url(array('controller' => 'ajax'), null, true); ?>';
+var id = '<?php echo $this->item['name']; ?>';
+function loadCategories(value)
+{
+    if (value == '') {
+        $('#categorySelect').html('<option value="">Erst Klasse auswählen</option>').attr('disabled', 'disabled').val('');
+        checkSubmit();
+        return;
+    }
+    $('#categorySelect').load(baseUrl + '/getNewCategories/type/' + value).removeAttr('disabled');
+    checkSubmit();
+}
+function checkSubmit()
+{
+    if ($('#objectSelect').val() == '' || $('#categoryName').val() == '') {
+        $('#send').attr('disabled', 'disabled');
+    } else {
+        $('#send').removeAttr('disabled');
+    }
+}
+<?php $this->jQuery()->javascriptCaptureEnd(); ?>
+</script>
+    <div class="ttCategory">
+        <div class="ttCategoryTitle">Neue Kategorie</div>
+        <div class="subCategory">
+            <form action="<?php echo $this->url(array(
+                'controller' => 'new',
+                'action' => 'category',
+            ));?>" method="post">
+            <div class="subCategoryItem">
+                <div class="form-input-label">Kategoriename:</div>
+                <div class="form-input"><input type="text" name="categoryName" onkeyup="checkSubmit();" id="categoryName" class="w300"/></div>
+                <div class="form-input-label">Klasse:</div>
+                <div class="form-input"><select id="typeSelect" onchange="loadCategories(this.value);" class="w300" name="type">
+                    <option value="">- Bitte auswählen -</option>
+<?php
+    foreach ($this->types as $type) {
+?>
+    <option value="<?php echo $type['name']; ?>"><?php echo $type['dname']; ?></option>
+<?php
+    }
+?></select></div>
+                <div class="clear"></div>
+                <div class="form-input-label">Einsortieren vor:</div>
+                <div class="form-input"><select id="categorySelect" onchange="checkSubmit();" disabled="disabled" class="w300" name="insertBefore">
+                    <option value="">Erst Klasse auswählen</option>
+                </select></div>
+                <div class="clear"></div>
+                <div class="form-input-label">&nbsp;</div>
+                <div class="form-input"><input type="submit" value="Erstellen" id="send" disabled="disabled"/></div>
+                <div class="clear"></div>
+            </div>
+            </form>
+        </div>
+    </div>

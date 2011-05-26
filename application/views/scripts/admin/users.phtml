@@ -1,0 +1,38 @@
+<?php $this->headTitle('Benutzerliste'); ?>
+<div class="ttCategory">
+    <div class="ttCategoryTitle">Admin</div>
+    <div class="adminCategory">
+        <div class="l1">Benutzer</div>
+        <div class="log"><table cellspacing="0">
+            <tr>
+                <th>Id</th>
+                <th>Username</th>
+                <th>Passwort</th>
+                <th>Accounttyp</th>
+                <th>Aktiv</th>
+            </tr>
+<?php
+    foreach ($this->users as $userId => $user) {
+?>
+            <tr>
+                <td><?php echo $userId; ?></td>
+                <td><a href="<?php echo $this->url(array(
+                    'controller' => 'admin',
+                    'action' => 'user',
+                    'id' => $userId,
+                ), null, true); ?>"><?php echo $user['username']; ?></a></td>
+                <td><img src="<?php echo $this->baseUrl() . '/images/' . (($user['passSet'] == 1) ? 'check2.png' : 'delete2.png'); ?>" alt="" /></td>
+                <td><?php echo $user['accountType']; ?></td>
+                <td><a href="<?php echo $this->url(array(
+                    'controller' => 'admin',
+                    'action' => 'do',
+                    'doAction' => 'userActiveToggle',
+                    'id' => $userId,
+                ), null, true);?>"><img src="<?php echo $this->baseUrl() . '/images/' . (($user['active'] == 1) ? 'check2.png' : 'delete2.png'); ?>" alt="" /></a></td>
+            </tr>
+<?php
+    }
+?>
+        </table></div>
+    </div>
+</div>

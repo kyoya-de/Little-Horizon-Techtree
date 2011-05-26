@@ -1,0 +1,115 @@
+<?php
+$this->headTitle('Kommentar bearbeiten');
+$this->jQuery()->addJavascriptFile($this->baseUrl() . '/js/bbeditor.js');
+?>
+    <div class="ttCategory">
+        <div class="ttCategoryTitle">Details - <?php echo $this->escape($this->item['dname']); ?> (<?php echo $this->escape($this->item['name']); ?>) <span class="small">[ Finale Stufe: <?php echo $this->item['max_level']; ?> ]</span></div>
+        [<?php echo $this->hyperlink('Vorraussetzungen', array(
+            'controller' => 'objects',
+            'action' => 'details',
+            'id' => $this->item['name'],
+        )); ?>] [<?php echo $this->hyperlink('Reverse', array(
+            'controller' => 'objects',
+            'action' => 'reverse',
+            'id' => $this->item['name'],
+        )); ?>] [<span class="bold">Kommentar</span>] [<?php echo $this->hyperlink('Neue Stufe', array(
+            'controller' => 'edit',
+            'action' => 'newLevel',
+            'id' => $this->item['name'],
+        ));?>]
+        <div class="subCategory">
+            <div class="subCategoryTitle">Vorschau</div>
+<?php
+if ($this->doAction == 'preview') {
+?>
+            <div class="subCategoryItem">
+                <p class="red bold">Dies ist nur eine Vorschau.<br>
+                    Der Kommentar wurde noch nicht gespeichert.</p>
+            </div>
+<?php
+}
+?>
+            <div class="subCategoryItem"><?php echo $this->bbcode($this->comment); ?></div>
+        </div>
+        
+        <div class="subCategory">
+            <div class="subCategoryTitle">Kommentar bearbeiten</div>
+            <form action="" method="post" onsubmit="return false">
+                <div class="subCategoryItem">
+                    <button id="bold" class="toolbutton" onclick="insertCode('comment', '[b]$0[/b]'); return false;" name="bold"><span class="bold">B</span></button>
+                    <button id="italic" class="toolbutton" onclick="insertCode('comment', '[i]$0[/i]'); return false;" name="italic"><span class="italic">I</span></button>
+                    <button id="underline" class="toolbutton" onclick="insertCode('comment', '[u]$0[/u]'); return false;" name="iunderline"><span class="underline">U</span></button>
+                    <select id="color" onchange="insertCode('comment', '[color=$1]$0[/color]', this.value); this.selectedIndex = 0; return false;" name="color">
+                        <option selected="selected">Standard</option>
+<?php
+$colors = array('000000', '800000', 'FF0000', '008000', '00FF00', '000080', '0000FF', 'FF8000', 'FFFF00', '80FF00', '00FF80', '00FFFF', '0080FF', '8000FF', 'FF00FF', 'FF0080');
+foreach ($colors as $color) {
+?>
+                            <option value="#<?php echo $color; ?>" style="background-color:#<?php echo $color; ?>;"></option>
+<?php
+}
+?>
+                    </select><br/>
+<?php
+foreach (TechTree_Bbcode_Smilies::getSmileyList() as $smiley => $image) {
+?>
+                    <button class="toolbutton" onclick="insertCode('comment', '<?php echo $smiley; ?>'); return false;"><img src="<?php echo $this->baseUrl() . '/images/' . $image; ?>" alt="<?php echo $smiley; ?>" title="<?php echo $smiley; ?>" /></button>
+<?php
+}
+?><br/>
+                    [<?php echo $this->hyperlink('Detaillink einfügen', '#', array(
+    'id' => 'linkToggle',
+));?>]
+                    <div class="detailLinks">
+<?php
+foreach ($this->objects as $typeName => $categories) {
+?>
+                        <select class="detaillink" onchange="insertCode('comment', '[details=$1]', this.value); this.selectedIndex = 0; return false;">
+                            <option><?php echo $typeName; ?></option>
+<?php
+    foreach ($categories as $categoryName => $items) {
+?>
+                            <optgroup label="<?php echo $categoryName; ?>">
+<?php
+        foreach ($items as $itemId => $itemName) {
+?>
+                                <option value="<?php echo $itemId; ?>"><?php echo $itemName; ?></option>
+<?php
+        }
+?>
+                            </optgroup>
+<?php
+    }
+?>
+                        </select>
+<?php
+}
+?>
+                    </div>
+<?php $this->jQuery()->onLoadCaptureStart(); ?>
+$('#linkToggle').toggle(
+function() {
+    $('.detailLinks').slideDown(400);
+    $('#linkToggle').html('Ausblenden');
+},
+function() {
+    $('.detailLinks').slideUp(400);
+    $('#linkToggle').html('Detaillink einfügen');
+});
+<?php $this->jQuery()->onLoadCaptureEnd(); ?>
+                </div>
+            </form>
+            <form action="<?php echo $this->url(array(
+                'controller' => 'edit',
+                'action' => 'comment',
+                'id' => $this->item['name'],
+            )); ?>" method="post" enctype="multipart/formdata">
+                <div class="subCategoryItem">
+                    <textarea rows="15" cols="53" name="comment" id="comment"><?php echo $this->comment; ?></textarea>
+                    <button type="submit" name="do" value="save" class="toolbutton bold">Speichern</button>
+                    <button type="submit" name="do" value="preview" class="toolbutton">Vorschau</button>
+                    <button type="submit" name="do" value="delete" class="toolbutton red">Löschen</button>
+                </div>
+            </form>
+        </div>
+    </div>

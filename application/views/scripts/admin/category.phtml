@@ -1,0 +1,66 @@
+<?php $this->headTitle('Kategorie bearbeiten'); ?>
+<div class="ttCategory">
+    <div class="ttCategoryTitle">Admin</div>
+    <div class="adminCategory">
+        <form action="<?php echo $this->url(array(
+            'controller' => 'admin',
+            'action' => 'do',
+        ), null, true);?>" method="post" enctype="multipart/formdata">
+            <div class="form-element">
+                <div class="form-input-label">Kategorie-Id:</div>
+                <div class="form-input"><input type="text" name="categoryId" readonly="readonly" value="<?php echo $this->category['id'];?>"/></div>
+            </div>
+            <div class="form-element">
+                <div class="form-input-label">Name:</div>
+                <div class="form-input"><input type="text" name="name" value="<?php echo $this->category['name'];?>"/></div>
+            </div>
+            <div class="form-element">
+                <div class="form-input-label">Anzeigename:</div>
+                <div class="form-input"><input type="text" name="dname" value="<?php echo $this->category['dname'];?>"/></div>
+            </div>
+            <div class="form-element">
+                <div class="form-input-label">Typ:</div>
+                <div class="form-input"><select name="type">
+<?php
+    foreach (TechTree_Utils::getItemTypes() as $typeId => $typeName) {
+?>
+                    <option value="<?php echo $typeId; ?>"<?php echo ($typeId == $this->category['type']) ? ' selected="selected"' : ''; ?>><?php echo $typeName; ?></option>
+<?php
+    }
+?>
+                </select></div>
+            </div>
+            <div class="form-element">
+                <div class="form-input-label">Left:</div>
+                <div class="form-input"><input type="text" name="left" value="<?php echo $this->category['lft'];?>"/></div>
+            </div>
+            <div class="form-element">
+                <div class="form-input-label">Right:</div>
+                <div class="form-input"><input type="text" name="right" readonly="readonly" value="<?php echo $this->category['rgt'];?>"/></div>
+            </div>
+            <div class="form-element">
+                <div class="form-input-label">&nbsp;</div>
+                <div class="form-input"><button type="submit" name="doAction" value="categoryEdit">Speichern</button> <button type="submit" name="doAction" value="categoryDelete">Löschen</button></div>
+            </div>
+        </form>
+<?php
+    if (isset($this->result)) {
+?>
+        <div class="subCategoryItem">
+<?php
+        if ($this->result == 1) {
+?>
+            <span class="green bold">Speichern erfolgreich.</span>
+<?php
+        } else {
+?>
+            <span class="red bold">Speichern fehlgeschlagen.</span>
+<?php
+        }
+?>
+        </div>
+<?php
+    }
+?>
+    </div>
+</div>

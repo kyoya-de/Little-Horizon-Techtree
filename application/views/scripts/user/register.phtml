@@ -1,0 +1,19 @@
+<?php
+$this->headTitle('Registrieren');
+?>
+        <div class="ttCategory">
+            <div class="ttCategoryTitle">Registrieren</div>
+            <div class="subCategory">
+                <?php
+    if(isset($this->registerMessage))
+    {
+        echo $this->registerMessage;
+    }
+    else
+    {
+        echo $this->registerForm;
+    }
+    echo PHP_EOL;
+?>
+            </div>
+        </div>

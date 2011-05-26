@@ -1,0 +1,100 @@
+<?php $this->headTitle('Objekt bearbeiten'); ?>
+<div class="ttCategory">
+    <div class="ttCategoryTitle">Admin</div>
+    <div class="adminCategory">
+        <form action="<?php echo $this->url(array(
+            'controller' => 'admin',
+            'action' => 'do',
+        ), null, true);?>" method="post" enctype="multipart/formdata">
+            <div class="form-element">
+                <div class="form-input-label">Objekt-Id:</div>
+                <div class="form-input"><input type="text" name="objectId" readonly="readonly" value="<?php echo $this->object['id'];?>"/></div>
+            </div>
+            <div class="clear"></div>
+            <div class="form-element">
+                <div class="form-input-label">Name:</div>
+                <div class="form-input"><input type="text" name="name" value="<?php echo $this->object['name'];?>"/></div>
+            </div>
+            <div class="clear"></div>
+            <div class="form-element">
+                <div class="form-input-label">Anzeigename:</div>
+                <div class="form-input"><input type="text" name="dname" value="<?php echo $this->object['dname'];?>"/></div>
+            </div>
+            <div class="clear"></div>
+            <div class="form-element">
+                <div class="form-input-label">Typ:</div>
+                <div class="form-input"><select name="type">
+<?php
+    foreach (TechTree_Utils::getItemTypes() as $typeId => $typeName) {
+?>
+                    <option value="<?php echo $typeId; ?>"<?php echo ($typeId == $this->object['type']) ? ' selected="selected"' : ''; ?>><?php echo $typeName; ?></option>
+<?php
+    }
+?>
+                </select></div>
+            </div>
+            <div class="clear"></div>
+            <div class="form-element">
+                <div class="form-input-label">Rasse:</div>
+                <div class="form-input"><select name="race">
+<?php
+    foreach (TechTree_Utils::getItemRaces() as $raceId => $raceName) {
+?>
+                    <option value="<?php echo $raceId; ?>"<?php echo ($raceId == $this->object['race']) ? ' selected="selected"' : ''; ?>><?php echo $raceName; ?></option>
+<?php
+    }
+?>
+                </select></div>
+            </div>
+            <div class="clear"></div>
+            <div class="form-element-textarea">
+                <div class="form-input-label">Kommentar:</div>
+                <div class="form-input"><textarea name="comment"><?php echo $this->object['comment'];?></textarea></div>
+            </div>
+            <div class="clear"></div>
+            <div class="form-element">
+                <div class="form-input-label">Max. Level:</div>
+                <div class="form-input"><input type="text" name="maxLevel" value="<?php echo $this->object['maxLevel'];?>"/></div>
+            </div>
+            <div class="clear"></div>
+            <div class="form-element">
+                <div class="form-input-label">Letztes Update:</div>
+                <div class="form-input"><input type="text" name="lastUpdate" value="<?php echo $this->object['lastUpdate'];?>"/></div>
+            </div>
+            <div class="clear"></div>
+            <div class="form-element">
+                <div class="form-input-label">Left:</div>
+                <div class="form-input"><input type="text" name="left" value="<?php echo $this->object['lft'];?>"/></div>
+            </div>
+            <div class="clear"></div>
+            <div class="form-element">
+                <div class="form-input-label">Right:</div>
+                <div class="form-input"><input type="text" name="right" readonly="readonly" value="<?php echo $this->object['rgt'];?>"/></div>
+            </div>
+            <div class="clear"></div>
+            <div class="form-element">
+                <div class="form-input-label">&nbsp;</div>
+                <div class="form-input"><button type="submit" name="doAction" value="objectEdit">Speichern</button> <button type="submit" name="doAction" value="objectDelete">Löschen</button></div>
+            </div>
+        </form>
+<?php
+    if (isset($this->result)) {
+?>
+        <div class="subCategoryItem">
+<?php
+        if ($this->result == 1) {
+?>
+            <span class="green bold">Speichern erfolgreich.</span>
+<?php
+        } else {
+?>
+            <span class="red bold">Speichern fehlgeschlagen.</span>
+<?php
+        }
+?>
+        </div>
+<?php
+    }
+?>
+    </div>
+</div>

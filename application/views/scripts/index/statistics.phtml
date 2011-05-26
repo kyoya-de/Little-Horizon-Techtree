@@ -1,0 +1,49 @@
+<?php
+$this->headTitle('Statistik');
+?>
+<div class="ttCategory">
+    <div class="ttCategoryTitle">Statistiken</div>
+    <div class="subCategory">
+<?php
+$index = 0;
+foreach ($this->stats as $root) {
+    
+?>
+        <div class="l1"><a href="<?php echo $this->url(array(
+            'controller' => 'index',
+            'action' => 'index',
+        ), null, true); ?>"><?php echo $this->escape($root['dname']); ?></a><span class="level-info"><?php echo $root['count'];?></span></div>
+<?php
+    foreach ($root['childs'] as $typeName => $types) {
+        $index++;
+        if (($index % 2) == 1) {
+            $darkClass = ' dark';
+        } else {
+            $darkClass = '';
+        }
+?>
+        <div class="l2<?php echo $darkClass; ?>"><a href="<?php echo $this->url(array(
+            'controller' => 'objects',
+            'action' => $typeName,
+        ), null, true);?>"><?php echo $this->escape($types['dname']); ?></a><span class="level-info"><?php echo $types['count'];?></span></div>
+<?php
+        foreach ($types['childs'] as $catName => $categories) {
+            $index++;
+            if (($index % 2) == 1) {
+                $darkClass = ' dark';
+            } else {
+                $darkClass = '';
+            }
+?>
+        <div class="l3<?php echo $darkClass; ?>"><a href="<?php echo $this->url(array(
+            'controller' => 'objects',
+            'action' => $typeName,
+            'category' => $catName,
+        ), null, true);?>"><?php echo $this->escape($categories['dname']); ?></a><span class="level-info"><?php echo $categories['count'];?></span></div>
+<?php
+        }
+    }
+}
+?>
+    </div>
+</div>
