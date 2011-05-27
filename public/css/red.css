@@ -420,12 +420,17 @@ a img {
     font-weight:bold;
 }
 .messageInfo #newMsgs {
-    background:url(../images/newMessage.png) no-repeat;
+    background:url(../images/mail-mark-unread-new.png) no-repeat;
     padding-left:19px;
     margin-top:4px;
 }
 .messageInfo #totalMsgs {
-    background:url(../images/message.png) no-repeat;
+    background:url(../images/mail-mark-unread.png) no-repeat;
     margin-top:10px;
     padding-left:19px;
+}
+.ajax-loader {
+    width:220px;
+    height:19px;
+    background:url(../images/red/ajax-loader.gif) no-repeat;
 }

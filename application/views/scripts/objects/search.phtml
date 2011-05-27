@@ -34,8 +34,8 @@ echo $this->url(
 );
 ?>" method="post" enctype="multipart/formdata">
                 <div class="subCategory">
-                    <div class="subCategoryTitle">Suche nach</div>
-                    <div class="subCategoryItem"><input type="text" name="searchTerm" size="60" id="searchTerm" value="<?php echo $this->searchTerm; ?>" /> <img src="<?php echo $this->baseUrl(); ?>/images/throbber.gif" alt="" id="searchThrobber" style="display:none;" /></div>
+                    <div class="subCategoryTitle"><label for="searchTerm">Suche nach</label></div>
+                    <div class="subCategoryItem"><input type="text" name="searchTerm" size="60" id="searchTerm" value="<?php echo $this->searchTerm; ?>" /> <div class="ajax-loader" id="searchThrobber" style="display:none;"></div></div>
                 </div>
             </form>
             <div class="subCategory" id="searchResult" style="display:none;">

@@ -422,12 +422,12 @@ a img {
     font-weight:bold;
 }
 .messageInfo #newMsgs {
-    background:url(../images/newMessage.png) no-repeat;
+    background:url(../images/mail-mark-unread-new.png) no-repeat;
     padding-left:19px;
     margin-top:4px;
 }
 .messageInfo #totalMsgs {
-    background:url(../images/message.png) no-repeat;
+    background:url(../images/mail-mark-unread.png) no-repeat;
     margin-top:10px;
     padding-left:19px;
 }
@@ -442,6 +442,7 @@ a img {
     cursor:pointer;
     margin:0;
     padding:0;
+    width:500px;
 }
 .messageTable .message > div {
     padding:3px;
@@ -453,12 +454,13 @@ a img {
     background-position:2px 3px;
 }
 .messageTable .message .status {
-    background-image:url(../images/message32.png);
+    background-image:url(../images/mail-mark-unread.png);
     background-repeat:no-repeat;
-    min-height:32px;
+    height:16px;
+    width:16px;
 }
 .messageTable .message .status.new {
-    background-image:url(../images/newMessage32.png);
+    background-image:url(../images/mail-mark-unread-new.png);
 }
 .messageTable .message .from {
     width:120px;
@@ -476,5 +478,31 @@ a img {
     width:490px;
 }
 .messageTable .message .actions {
+    margin-top:5px;
+    display:none;
+}
+.ajax-loader {
+    width:220px;
+    height:19px;
+    background:url(../images/blue/ajax-loader.gif) no-repeat;
+}
+.toolbutton.action {
+    width:16px;
+    height:16px;
+    min-width:16px;
+    float:left;
+    cursor:pointer;
+}
+.toolbutton.action:hover { /*display:block;*/
+    background-color: #CCCCFF;
+    border: 1px solid #555599;
+}
+.toolbutton.action.reply {
+    background:url(../images/mail-reply-sender.png) no-repeat 1px 1px;
+}
+.toolbutton.action.delete {
+    background:url(../images/edit-delete.png) no-repeat 1px 1px;
+}
+.msgContent .msgReply {
     display:none;
 }

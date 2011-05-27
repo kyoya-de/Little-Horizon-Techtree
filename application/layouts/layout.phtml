@@ -2,9 +2,9 @@
 $this->doctype(Zend_View_Helper_Doctype::XHTML1_TRANSITIONAL);
 $this->headTitle('Little Horizon - Community TechTree v4 (' . TechTree_Version::CODENAME . ')', Zend_View_Helper_Placeholder_Container::PREPEND)->setSeparator(' » ');
 
-$this->jQuery()->setLocalPath($this->baseUrl() . '/js/jquery-1.4.2.min.js');
+$this->jQuery()->setLocalPath($this->baseUrl() . '/js/jquery-1.6.1.min.js');
 
-$this->jQuery()->setUiLocalPath($this->baseUrl() . '/js/jquery-ui-1.8.custom.min.js');
+$this->jQuery()->setUiLocalPath($this->baseUrl() . '/js/jquery-ui-1.8.13.custom.min.js');
 $this->jQuery()->uiEnable();
 
 $authSession = TechTree_Session::getNamespace('Auth');
@@ -22,7 +22,7 @@ if ($authSession->accountType == 'admin') {
 }
 
 $this->jQuery()->addStylesheet($this->baseUrl() . $styleSheet);
-$this->jQuery()->addStylesheet($this->baseUrl() . '/css/ui-lightness/jquery-ui-1.8.custom.css');
+$this->jQuery()->addStylesheet($this->baseUrl() . '/css/ui-lightness/jquery-ui-1.8.13.custom.css');
 
 echo '<?xml version="1.0" ?>' . "\n";
 

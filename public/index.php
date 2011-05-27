@@ -39,6 +39,7 @@ set_include_path(
         )
     )
 );
+
 if (!class_exists('Debug') && APPLICATION_ENV == 'development') {
     include 'Debug.php';
 }

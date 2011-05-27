@@ -1,0 +1,123 @@
+<div class="ttCategory">
+    <div class="ttCategoryTitle">Messages</div>
+<?php
+foreach ($this->messages as $messageId => $message) {
+?>
+    <div class="subCategory">
+        <div class="messageTable">
+            <div class="message">
+                <div class="from"><?php echo $message['from']; ?></div>
+                <div class="subject"><?php echo $this->escape($message['subject']); ?></div>
+                <div class="date"><?php echo date('d.m.Y H:i:s', $message['time']); ?></div>
+                <div class="status<?php echo $message['new'] ? ' new' : ''; ?>"></div>
+                <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
+            <div class="msgContent" id="msg<?php echo $messageId; ?>">
+                <div class="msgBody"></div>
+                <div class="actions">
+                    <div class="toolbutton action reply" title="Antworten"></div>&nbsp;
+                    <div class="toolbutton action delete" title="Löschen"></div>
+                    <div class="clear"></div>
+                </div>
+                <form action="<?php echo $this->url(array('controller' => 'message', 'action' => 'ajax-send-reply')); ?>" onsubmit="return false;" id="frm-<?php echo $messageId; ?>">
+                    <div class="msgReply">
+                        <input type="hidden" name="id" value="<?php echo $messageId; ?>" />
+                        <div class="label"><label for="reply-subject-<?php echo $messageId; ?>">Betreff:</label></div>
+                        <div class="input"><input type="text" name="subject" id="reply-subject-<?php echo $messageId; ?>" value="Re: <?php echo str_replace('Re: ', '', $message['subject']); ?>" /></div>
+                        <div class="clear"></div>
+                        <div class="label"><label for="reply-message-<?php echo $messageId; ?>">Nachricht:</label></div>
+                        <div class="input"><textarea name="message" id="reply-message-<?php echo $messageId; ?>" cols="50" rows="10"></textarea></div>
+                        <div class="clear"></div>
+                        <div class="label"></div>
+                        <div class="input"><input type="submit" value="Absenden" onclick="sendReply('<?php echo $messageId; ?>');" /></div>
+                        <div class="clear"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+<?php
+}
+?>
+</div>
+<script type="text/javascript">
+<?php
+$this->jQuery()->onLoadCaptureStart();
+?>
+$('.message').toggle(function() {
+    var msgContent = $(this).parent().children('.msgContent');
+    var msgId = msgContent.attr('id').substring(3);
+    var msgBody = msgContent.find('.msgBody');
+    msgBody.load('<?php echo $this->url(array('controller' => 'message', 'action' => 'ajax-get-message')); ?>/id/' + msgId + '/', function(data) {
+        $(msgContent).slideDown(250);
+        $(msgContent).parent().parent().children('.message').children('.status').removeClass('new');
+        $(msgContent).children('form').children('.msgReply').children('.input').children('textarea').val(data.replace(/^(.)/g, '\n\$RE\$\n$1').replace(/\n$/, '').replace(/\n/g, '\n> ').replace('> $RE$', ''));
+        msgBody.html(data.replace(/\n/g,'<br/>\n'));
+    });
+}, function() {
+    var msgContent = $(this).parent().children('.msgContent');
+    msgContent.slideUp(250);
+});
+$('.action.reply').toggle(function() {
+    $(this).parent().parent().children('form').children('.msgReply').slideDown(250);
+}, function() {
+    $(this).parent().parent().children('form').children('.msgReply').slideUp(250);
+});
+$('.action.delete').bind('click', function() {
+    var msgDiv = $(this).parent().parent().parent().parent();
+    $('<div>Soll die Nachricht wirklich gelöscht werden?</div>').dialog({
+        'buttons': [ {
+            'text': "Ja",
+            'click': function() {
+                msgDiv.slideUp(250, function() {
+                    $(this).remove();
+                });
+                $(this).dialog('close');
+            }
+        }, {
+            'text': "Nein",
+            'click': function() {
+                $(this).dialog('close');
+            }
+        } ],
+        'title':'Nachricht löschen',
+        'closeOnEscape':false,
+        'modal':true
+    });
+});
+<?php
+$this->jQuery()->onLoadCaptureEnd();
+$this->jQuery()->javascriptCaptureStart();
+?>
+function sendReply(msgId)
+{
+    var form = $('#frm-' + msgId);
+    var formData = form.serializeArray();
+    $.ajax({
+        type:'POST',
+        url:form.attr('action'),
+        data:formData,
+        success: function(data) {
+            var msg = 'Die Nachricht konnte nicht gesendet werden.\n\nFehlermeldung: %s';
+            if (data == true) {
+                msg = 'Die Nachricht wurde verschickt.';
+            } else {
+                msg = msg.replace('%s', data);
+            }
+            $('<div>' + msg.replace(/\n/g, '<br/>\n') + '</div>').dialog({
+                modal:true,
+                buttons:{
+                    'OK':function() { $(this).dialog('close'); }
+                }
+            });
+            form.children('.msgReply').slideUp(250);
+        }
+    });
+}
+<?php
+$this->jQuery()->javascriptCaptureEnd();
+?>
+</script>
