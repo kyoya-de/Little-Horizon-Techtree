@@ -6,9 +6,9 @@
  */
 class TechTree_Version
 {
-    const VERSION = '4.0.1';
+    const VERSION = '4.1.0';
     
-    const CODENAME = 'Heart';
+    const CODENAME = 'Tongue';
 
     /**
      * Compare the specified TechTree version string $version
