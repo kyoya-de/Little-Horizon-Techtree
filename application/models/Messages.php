@@ -12,9 +12,9 @@ class Application_Model_Messages extends TechTree_Db_Model
     {
         $to = $this->_dbObject->quote($to);
         $pdoState = $this->_dbObject->query(
-            "SELECT COUNT(*) msgCount, (
-            SELECT COUNT(*) FROM `tt_messages` WHERE `to` = $to AND `new` = 1
-            ) msgNew FROM `tt_messages` WHERE `to` = $to"
+            "SELECT COUNT(*) msgTotal, (
+            SELECT COUNT(*) FROM `tt_messages` WHERE `to` = $to AND `new` = 1 AND `type` = 'MESSAGE'
+            ) msgNew FROM `tt_messages` WHERE `to` = $to AND `type` = 'MESSAGE'"
         );
         $summary = $pdoState->fetch(PDO::FETCH_ASSOC);
         $pdoState->closeCursor();
@@ -49,12 +49,14 @@ class Application_Model_Messages extends TechTree_Db_Model
      *
      * @param string $messageId Id of the message to delete.
      *
-     * @return void
+     * @return bool
      */
-    public function deleteMessage($messageId)
+    public function deleteMessage($messageId, $userId)
     {
         $messageId = $this->_dbObject->quote($messageId);
-        $this->_dbObject->query("DELETE FROM `tt_messages` WHERE `id` = $messageId");
+        $userId = $this->_dbObject->quote($userId);
+        $result = $this->_dbObject->exec("DELETE FROM `tt_messages` WHERE `id` = $messageId AND `to` = $userId");
+        return ($result > 0);
     }
 
     /**
@@ -78,9 +80,9 @@ class Application_Model_Messages extends TechTree_Db_Model
      * @param string $subject Message subject
      * @param string $message Message body
      * 
-     * @return bool
+     * @return bool|string
      */
-    public function addMessage($from, $to, $subject, $message)
+    public function addMessage($from, $to, $subject, $message, $messageType = 'MESSAGE')
     {
         $timestamp = time();
         $data = array(
@@ -89,12 +91,18 @@ class Application_Model_Messages extends TechTree_Db_Model
             'TO' => $to,
             'SUBJECT' => $subject,
             'MESSAGE' => $message,
+            'TYPE' => $messageType,
         );
         $pdoState = $this->_dbObject->prepare(
-            "INSERT INTO `tt_messages` (`id`, `from`, `to`, `subject`, `message`, `new`, `timestamp`) VALUES
-            (MD5(:TIME), :FROM, :TO, :SUBJECT, :MESSAGE, 1, :TIME)"
+            "INSERT INTO `tt_messages` (`id`, `type`, `from`, `to`, `subject`, `message`, `new`, `timestamp`)
+            VALUES (MD5(:TIME), :TYPE, :FROM, :TO, :SUBJECT, :MESSAGE, 1, :TIME)"
         );
-        return $pdoState->execute($data);
+        $result = $pdoState->execute($data);
+        if ($result !== true) {
+            list($state, $code, $msg) = $pdoState->errorInfo();
+            $result = "MySQL-ERROR $code ($state): $msg";
+        }
+        return $result;
     }
 
     /**
@@ -111,7 +119,7 @@ class Application_Model_Messages extends TechTree_Db_Model
             FROM `tt_messages` m
             LEFT JOIN `tt_users` us ON us.`id` = m.`from`
             LEFT JOIN `tt_users` ur ON ur.`id` = m.`to`
-            WHERE m.`to` = $to ORDER BY m.`timestamp` DESC";
+            WHERE m.`to` = $to AND m.`type` = 'MESSAGE' ORDER BY m.`timestamp` DESC";
         $pdoState = $this->_dbObject->query($select);
         $messages = array();
         while ($row = $pdoState->fetch(PDO::FETCH_ASSOC)) {
@@ -124,5 +132,21 @@ class Application_Model_Messages extends TechTree_Db_Model
             );
         }
         return $messages;
+    }
+
+    /**
+     * Gets information about message sender and recipient.
+     *
+     * @param string $messageId ID of the message
+     * 
+     * @return mixed
+     */
+    public function getMetaData($messageId)
+    {
+        $messageId = $this->_dbObject->quote($messageId);
+        $pdoState = $this->_dbObject->query("SELECT `from`, `to` FROM `tt_messages` WHERE `id` = $messageId");
+        $metaData = $pdoState->fetch(PDO::FETCH_ASSOC);
+        $pdoState->closeCursor();
+        return $metaData;
     }
 }

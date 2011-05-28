@@ -50,6 +50,7 @@ foreach ($this->bugs as $bugId => $bug) {
 <?php
     if ($authSession->accountType == 'admin') {
 ?>
+            <hr/>
             <div class="subCategoryItem">
                 <form action="<?php echo $this->url(array(
                     'controller' => 'bugs',
@@ -93,8 +94,56 @@ foreach ($this->bugs as $bugId => $bug) {
 <?php
     }
 ?>
+            <hr/>
+<?php
+    $i = 0;
+    foreach ($bug['comments'] as $comment) {
+        $style = '';
+        $i++;
+        if (($i % 2) == 0) {
+            $style = 'Dark';
+        }
+?>
+                <div class="subCategoryItem<?php echo $style; ?>"><span class="bold">Kommentar von <?php echo $comment['username']; ?>:</span></div>
+                <div class="subCategoryItem<?php echo $style; ?>"><?php echo nl2br($this->escape($comment['message']), true); ?></div>
+<?php
+    }
+?>
+            <div class="subCategoryItem">
+                <form action="<?php echo $this->url(array('controller' => 'message', 'action' => 'add-bug-comment')); ?>" id="frm-<?php echo $bugId; ?>">
+                    <div class="bugComment">
+                        <input type="hidden" name="id" value="<?php echo $bugId; ?>" />
+                        <div class="label"><label for="reply-message-<?php echo $bugId; ?>">Kommentar:</label></div>
+                        <div class="input"><textarea name="message" id="reply-message-<?php echo $bugId; ?>" cols="50" rows="10"></textarea></div>
+                        <div class="clear"></div>
+                        <div class="label"></div>
+                        <div class="input"><input type="submit" value="Absenden" /></div>
+                        <div class="clear"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="toolbutton action newBugComment" id="abc<?php echo $bugId; ?>">Kommentar anhängen</div>
+            <div class="clear"></div>
         </div>
 <?php
 }
 ?>
     </div>
+<script type="text/javascript">
+<?php
+$this->jQuery()->onLoadCaptureStart();
+?>
+$('.newBugComment').toggle(function() {
+    var bugId = $(this).attr('id').substring(3);
+    var bugForm = $('#frm-' + bugId);
+    bugForm.children('.bugComment').slideDown(300);
+}, function() {
+    var bugId = $(this).attr('id').substring(3);
+    var bugForm = $('#frm-' + bugId);
+    bugForm[0].reset();
+    bugForm.children('.bugComment').slideUp(300);
+});
+<?php
+$this->jQuery()->onLoadCaptureEnd();
+?>
+</script>

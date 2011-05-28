@@ -34,4 +34,18 @@ class Application_Model_Users extends TechTree_Db_Model
         }
         return $result;
     }
+    public function getActiveUsers($userId = null)
+    {
+        $usersSql = 'SELECT `id`, `username` FROM `tt_users` WHERE `active` = 1';
+        if ($userId !== null) {
+            $usersSql .= ' AND NOT `id` = ' . $userId;
+        }
+        $pdoState = $this->_dbObject->query($usersSql);
+        $users = array();
+        while ($row = $pdoState->fetch(PDO::FETCH_ASSOC)) {
+            $users[$row['id']] = $row['username'];
+        }
+
+        return $users;
+    }
 }

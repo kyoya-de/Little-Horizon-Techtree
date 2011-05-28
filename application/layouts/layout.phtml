@@ -14,6 +14,9 @@ if(isset($authSession->style)) {
     $styleSheet = '/css/blue.css';
 }
 
+$this->jQuery()->addStylesheet($this->baseUrl() . $styleSheet);
+$this->jQuery()->addStylesheet($this->baseUrl() . '/css/ui-lightness/jquery-ui-1.8.13.custom.css');
+
 if ($authSession->accountType == 'admin') {
     $this->jQuery()->addStylesheet($this->baseUrl() . '/css/admin/admin-nav.css');
     if (Zend_Controller_Front::getInstance()->getRequest()->getControllerName() == 'admin') {
@@ -21,8 +24,18 @@ if ($authSession->accountType == 'admin') {
     }
 }
 
-$this->jQuery()->addStylesheet($this->baseUrl() . $styleSheet);
-$this->jQuery()->addStylesheet($this->baseUrl() . '/css/ui-lightness/jquery-ui-1.8.13.custom.css');
+
+$jsPageInit = <<<EOT
+    $(window).bind('beforeunload', function() {
+        var overlay = $('<div class="ui-widget-overlay">Seite wird geladen...<div class="ajax-loader"><\\/div><\\/div>');
+        overlay.css({
+            'z-index':1001,
+            'padding-top':($(window).height() / 2 - 10) + 'px'
+        });
+        $('body').append(overlay);
+    });
+EOT;
+$this->jQuery()->addOnLoad($jsPageInit);
 
 echo '<?xml version="1.0" ?>' . "\n";
 
@@ -47,6 +60,8 @@ echo $this->doctype();
 <?php echo $this->partial('common/zendLogo.phtml'); ?>
 
 <?php echo $this->partial('common/planetSelect.phtml'); ?>
+
+<?php echo $this->messageSummary(); ?>
 
 <?php
 if ($authSession->accountType == 'admin') {

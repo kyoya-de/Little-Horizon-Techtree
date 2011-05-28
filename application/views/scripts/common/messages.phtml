@@ -1,0 +1,80 @@
+<div class="messageInfo">
+    <div class="title">Nachrichten <span class="small">[ <?php echo $this->htmlAnchor(array('controller' => 'message', 'action' => 'index'), 'Öffnen'); ?> ]</span></div>
+    <div class="messageSummary">
+        <div id="totalMsgs" title="Nachrichten gesamt"><?php echo $this->msgTotal; ?></div>
+        <div id="newMsgs" title="Neue Nachrichten"><?php echo $this->msgNew; ?></div>
+        <div class="clear"></div>
+    </div>
+    <div class="messageAction">
+        <div class="toolbutton action newMessage">Neue Nachricht schreiben</div>
+    </div>
+</div>
+<div id="newMsgDialog">
+    <form action="<?php echo $this->url(array('controller' => 'message', 'action' => 'ajax-send-new-mail')); ?>">
+        <div class="label"><label for="msgTarget">Empfänger:</label></div>
+        <div class="input"><select name="to" id="msgTarget">
+<?php
+foreach ($this->users as $userId => $username) {
+    echo '<option value="' . $userId . '">' . $username . '</option>';
+}
+?>
+        </select></div>
+        <div class="clear"></div>
+        <div class="label"><label for="msgSubject">Betreff:</label></div>
+        <div class="input"><input type="text" name="subject" id="msgSubject" /></div>
+        <div class="clear"></div>
+        <div class="label"><label for="msgMessage">Nachricht:</label></div>
+        <div class="input"><textarea name="message" id="msgMessage" rows="10" cols="50"></textarea></div>
+        <div class="clear"></div>
+    </form>
+</div>
+<script type="text/javascript">
+$('.messageInfo .newMessage').bind('click', function() {
+    $('#newMsgDialog').dialog('open');
+});
+$('#newMsgDialog').dialog({
+    autoOpen:false,
+    buttons:[{
+        text:'Absenden',
+        click:function () {
+            var msgForm = $(this).children('form');
+            $.ajax({
+                url: msgForm.attr('action'),
+                type:'POST',
+                data: msgForm.serializeArray()
+            });
+            $(this).dialog('close');
+        }
+    }, {
+        'text':'Abbrechen',
+        click:function () {
+            $(this).dialog('close');
+        }
+    }],
+    modal:true,
+    width:'360px',
+    close:function () {
+        $(this).children('form')[0].reset();
+    },
+    resizable:false,
+    title:'Neue Nachricht schreiben'
+});
+<?php
+if (isset($this->newMsgCount) && $this->newMsgCount > 0) {
+?>
+$('<div>Du hast <?php echo $this->newMsgCount; ?> neue Nachricht<?php echo ($this->newMsgCount == 1) ? '' : 'en'; ?>.<\/div>').dialog({
+    'buttons':[{
+        text:'Zum Postfach',
+        click:function () {
+            location.href = '<?php echo $this->url(array('controller' => 'message', 'action' => 'index'), null, true); ?>';
+        }
+    }, {
+        'text':'OK',
+        click:function () { $(this).dialog('close'); }
+    }],
+    modal:true
+});
+<?php
+}
+?>
+</script>

@@ -175,16 +175,6 @@ input, select, textarea, button {
     -webkit-border-radius: 5px;
     border-radius: 5px;
 }
-.messageInfo .title {
-    font-weight:bold;
-}
-.messageInfo #newMsgs {
-    background:url(../../images/newMessage.png) no-repeat;
-    padding-left:19px;
-    margin-top:4px;
-}
-.messageInfo #totalMsgs {
-    background:url(../../images/message.png) no-repeat;
-    margin-top:10px;
-    padding-left:19px;
+.ajax-loader {
+    background:url(../../images/admin/ajax-loader.gif) no-repeat;
 }

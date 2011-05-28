@@ -75,6 +75,7 @@ CREATE TABLE IF NOT EXISTS `tt_log` (
 DROP TABLE IF EXISTS `tt_messages`;
 CREATE TABLE IF NOT EXISTS `tt_messages` (
   `id` char(32) NOT NULL,
+  `type` ENUM('MESSAGE', 'BUG_COMMENT') DEFAULT 'MESSAGE',
   `from` bigint(20) NOT NULL,
   `to` bigint(20) NOT NULL,
   `subject` varchar(255) NOT NULL,

@@ -1,9 +1,3 @@
-function pageInit() {
-    $(window).bind('beforeunload', function() {
-        $('body').fadeTo(250, 0.2);
-    });
-}
-
 function messageCheck(checkUrl)
 {
     $.ajax({
@@ -44,7 +38,3 @@ function newMessageNotify(newMsgCount)
     });
 
 }
-
-$(document).ready(function() {
-    pageInit();
-});

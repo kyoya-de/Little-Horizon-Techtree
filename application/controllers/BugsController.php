@@ -23,7 +23,7 @@ class BugsController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        $bugs = TechTree_Bugs::getInstance();
+        $bugs = new Application_Model_Bugs();
         $users = new Application_Model_Users();
         $this->view->admins = $users->getAdmins();
         $this->view->states = $users->getStates();
@@ -80,7 +80,7 @@ class BugsController extends Zend_Controller_Action
         );
         if ($this->_request->isPost()) {
             if ($bugReportForm->isValid($this->_request->getParams())) {
-                $bugs = TechTree_Bugs::getInstance();
+                $bugs = new Application_Model_Bugs();
                 $authSession = TechTree_Session::getNamespace('Auth');
                 $bugs->reportBug(
                     $authSession->id,

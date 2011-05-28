@@ -1,5 +1,5 @@
 <div class="ttCategory">
-    <div class="ttCategoryTitle">Messages</div>
+    <div class="ttCategoryTitle">Postfach</div>
 <?php
 foreach ($this->messages as $messageId => $message) {
 ?>
@@ -13,11 +13,12 @@ foreach ($this->messages as $messageId => $message) {
                 <div class="clear"></div>
             </div>
             <div class="clear"></div>
+            <div id="loader<?php echo $messageId; ?>" class="ajax-loader"></div>
             <div class="msgContent" id="msg<?php echo $messageId; ?>">
-                <div class="msgBody"></div>
+                <div class="msgBody dark"></div>
                 <div class="actions">
-                    <div class="toolbutton action reply" title="Antworten"></div>&nbsp;
-                    <div class="toolbutton action delete" title="Löschen"></div>
+                    <div class="toolbutton action reply">Antworten</div>&nbsp;
+                    <div class="toolbutton action delete">Löschen</div>
                     <div class="clear"></div>
                 </div>
                 <form action="<?php echo $this->url(array('controller' => 'message', 'action' => 'ajax-send-reply')); ?>" onsubmit="return false;" id="frm-<?php echo $messageId; ?>">
@@ -34,11 +35,11 @@ foreach ($this->messages as $messageId => $message) {
                         <div class="clear"></div>
                     </div>
                 </form>
+                <div class="clear"></div>
             </div>
         </div>
         <div class="clear"></div>
     </div>
-
 <?php
 }
 ?>
@@ -50,12 +51,18 @@ $this->jQuery()->onLoadCaptureStart();
 $('.message').toggle(function() {
     var msgContent = $(this).parent().children('.msgContent');
     var msgId = msgContent.attr('id').substring(3);
+    $('#loader' + msgId).slideDown(100);
     var msgBody = msgContent.find('.msgBody');
     msgBody.load('<?php echo $this->url(array('controller' => 'message', 'action' => 'ajax-get-message')); ?>/id/' + msgId + '/', function(data) {
-        $(msgContent).slideDown(250);
-        $(msgContent).parent().parent().children('.message').children('.status').removeClass('new');
+        var msgStatus = $(msgContent).parent().children('.message').children('.status');
+        if (msgStatus.hasClass('new')) {
+            msgStatus.removeClass('new');
+            $('#newMsgs').html($('#newMsgs').html() - 1);
+        }
         $(msgContent).children('form').children('.msgReply').children('.input').children('textarea').val(data.replace(/^(.)/g, '\n\$RE\$\n$1').replace(/\n$/, '').replace(/\n/g, '\n> ').replace('> $RE$', ''));
         msgBody.html(data.replace(/\n/g,'<br/>\n'));
+        $('#loader' + msgId).slideUp(100);
+        msgContent.slideDown(250);
     });
 }, function() {
     var msgContent = $(this).parent().children('.msgContent');
@@ -67,13 +74,22 @@ $('.action.reply').toggle(function() {
     $(this).parent().parent().children('form').children('.msgReply').slideUp(250);
 });
 $('.action.delete').bind('click', function() {
-    var msgDiv = $(this).parent().parent().parent().parent();
-    $('<div>Soll die Nachricht wirklich gelöscht werden?</div>').dialog({
+    var msgContent = $(this).parent().parent();
+    var msgTable = msgContent.parent();
+    var isNew = msgTable.children('.message').children('status').hasClass('new');
+    var msgDiv = msgTable.parent();
+    var msgId = msgContent.attr('id').substring(3);
+    var baseUrl = '<?php echo $this->url(array('controller' => 'message', 'action' => 'ajax-delete-message')); ?>';
+    $('<div>Soll die Nachricht wirklich gelöscht werden?<\/div>').dialog({
         'buttons': [ {
             'text': "Ja",
             'click': function() {
                 msgDiv.slideUp(250, function() {
-                    $(this).remove();
+                    $.ajax(baseUrl + '/id/' + msgId);
+                    $('#totalMsgs').html($('#totalMsgs').html() - 1);
+                    if (isNew) {
+                        $('#newMsgs').html($('#newMsgs').html() - 1);
+                    }
                 });
                 $(this).dialog('close');
             }
@@ -107,7 +123,7 @@ function sendReply(msgId)
             } else {
                 msg = msg.replace('%s', data);
             }
-            $('<div>' + msg.replace(/\n/g, '<br/>\n') + '</div>').dialog({
+            $('<div>' + msg.replace(/\n/g, '<br\/>\n') + '<\/div>').dialog({
                 modal:true,
                 buttons:{
                     'OK':function() { $(this).dialog('close'); }
