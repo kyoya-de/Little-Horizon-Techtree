@@ -105,7 +105,7 @@ foreach ($this->bugs as $bugId => $bug) {
         }
 ?>
                 <div class="subCategoryItem<?php echo $style; ?>"><span class="bold">Kommentar von <?php echo $comment['username']; ?>:</span></div>
-                <div class="subCategoryItem<?php echo $style; ?>"><?php echo nl2br($this->escape($comment['message']), true); ?></div>
+                <div class="subCategoryItem<?php echo $style; ?>"><?php echo str_replace("\n", "<br/>\n", $this->escape($comment['message'])); ?></div>
 <?php
     }
 ?>
