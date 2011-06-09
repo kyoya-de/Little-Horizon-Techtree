@@ -40,6 +40,7 @@ class Application_Model_Users extends TechTree_Db_Model
         if ($userId !== null) {
             $usersSql .= ' AND NOT `id` = ' . $userId;
         }
+        $usersSql .= ' ORDER BY `username`';
         $pdoState = $this->_dbObject->query($usersSql);
         $users = array();
         while ($row = $pdoState->fetch(PDO::FETCH_ASSOC)) {

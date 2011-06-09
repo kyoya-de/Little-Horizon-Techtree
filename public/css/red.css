@@ -405,8 +405,8 @@ a img {
     right:15px;
     width:171px;
     display:table;
-    background-color: #FFDDCC;
     border: 1px solid #FF9999;
+    background-color: #FFEEDD;
     padding-left: 5px;
     padding-top: 5px;
     padding-right: 5px;
@@ -419,18 +419,128 @@ a img {
 .messageInfo .title {
     font-weight:bold;
 }
+.messageInfo #totalMsgs {
+    background:url(../images/mail-mark-unread.png) no-repeat;
+    padding-left:19px;
+    float:left;
+    margin-right:10px;
+    width:24px;
+}
 .messageInfo #newMsgs {
     background:url(../images/mail-mark-unread-new.png) no-repeat;
     padding-left:19px;
-    margin-top:4px;
+    float:left;
+    width:24px;
 }
-.messageInfo #totalMsgs {
-    background:url(../images/mail-mark-unread.png) no-repeat;
-    margin-top:10px;
-    padding-left:19px;
+.messageInfo .messageSummary {
+    padding:10px 37px 5px 38px;
+}
+.messageTable {
+    width:500px;
+}
+.messageTable > div,
+.messageTable .header > div {
+    float:left;
+}
+.messageTable .message {
+    cursor:pointer;
+    margin:0;
+    padding:0;
+    width:500px;
+}
+.messageTable .message > div {
+    padding:3px;
+    vertical-align:top;
+    float:left;
+}
+.messageTable .status {
+    width:32px;
+    background-position:2px 3px;
+}
+.messageTable .message .status {
+    background-image:url(../images/mail-mark-unread.png);
+    background-repeat:no-repeat;
+    height:16px;
+    width:16px;
+}
+.messageTable .message .status.new {
+    background-image:url(../images/mail-mark-unread-new.png);
+}
+.messageTable .message .from {
+    width:120px;
+}
+.messageTable .message .subject {
+    width:250px;
+}
+.messageTable .message .date {
+    text-align:center;
+    width:74px;
+}
+.messageTable .msgContent {
+    display:none;
+    padding:5px;
+    width:490px;
+}
+.messageTable .msgContent .msgBody {
+    padding:3px;
+}
+.messageTable .msgContent .actions {
+    float:right;
+    margin-top:5px;
 }
 .ajax-loader {
     width:220px;
     height:19px;
     background:url(../images/red/ajax-loader.gif) no-repeat;
+}
+.toolbutton.action {
+    height:14px;
+    float:left;
+    cursor:pointer;
+    padding-left:19px;
+    padding-right:3px;
+    padding-top:3px;
+    font-size:0.8em;
+    margin:0 3px;
+}
+.toolbutton.action:hover { /*display:block;*/
+    background-color: #FFCCCC;
+    border: 1px solid #995555;
+}
+.toolbutton.action.reply {
+    background:url(../images/mail-reply-sender.png) no-repeat 1px 1px;
+}
+.toolbutton.action.delete {
+    background:url(../images/edit-delete.png) no-repeat 1px 1px;
+}
+.msgContent .msgReply {
+    display:none;
+}
+.ui-widget-overlay {
+    color:#FFF;
+    text-align:center;
+    vertical-align:middle;
+}
+.messageTable .ajax-loader {
+    display:none;
+}
+.ui-widget-overlay .ajax-loader {
+    opacity:1;
+    margin:auto;
+}
+.toolbutton.action.newMessage {
+    background:url(../images/mail-message-new.png) no-repeat 1px 1px;
+}
+.toolbutton.action.newBugComment {
+    background:url(../images/mail-tagged.png) no-repeat 1px 1px;
+}
+hr {
+    height:1px;
+    border-top:1px solid #F99;
+    border-left:0;
+    border-bottom:0;
+    border-right:0;
+}
+.bugComment {
+    display:none;
 }
