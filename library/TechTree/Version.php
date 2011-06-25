@@ -21,7 +21,7 @@ class TechTree_Version
     /**
      * Current project version.
      */
-    const VERSION = '4.1.2';
+    const VERSION = '4.1.3';
 
     /**
      * Current codename of the project.

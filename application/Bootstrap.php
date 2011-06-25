@@ -22,6 +22,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
             'ZendX/JQuery/View/Helper/',
             'ZendX_JQuery_View_Helper'
         );
+        $view->doctype(Zend_View_Helper_Doctype::XHTML1_TRANSITIONAL);
 
         $viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper(
             'ViewRenderer'

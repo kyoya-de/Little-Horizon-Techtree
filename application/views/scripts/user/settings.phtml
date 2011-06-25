@@ -57,24 +57,28 @@ $this->headTitle('Account Einstellungen');
             </div>
 <?php
     }
+    if (count($this->userSettings['userLevelPlanet']) > 0) {
 ?>
-            <div class="subCategory">
-                <div class="subCategoryTitle">Planeten Techs</div>
+            <form action="<?php echo $this->url(array('controller' => 'user', 'action' => 'deletetechs')); ?>" method="post"><div class="subCategory">
+                <input class="deleteButton" type="submit" value="Löschen"/>
+                <input type="hidden" name="deletionType" value="planet"/>
+                <div class="subCategoryTitle"><input type="checkbox" onclick="checkAll(this);">Planeten Techs</div>
 <?php
-    $index = 0;
-    foreach($this->userSettings['userLevelPlanet'] as $objectId => $object)
-    {
-        $index++;
-        if(($index % 2) == 0)
+        $index = 0;
+        foreach($this->userSettings['userLevelPlanet'] as $objectId => $object)
         {
-            $styleSuffix = 'Dark';
-        }
-        else
-        {
-            $styleSuffix = '';
-        }
+            $index++;
+            if(($index % 2) == 0)
+            {
+                $styleSuffix = 'Dark';
+            }
+            else
+            {
+                $styleSuffix = '';
+            }
 ?>
                 <div class="subCategoryItem<?php echo $styleSuffix; ?>">
+                    <input class="float-left align-left" type="checkbox" name="techId[]" value="<?php echo $objectId; ?>" title="Löschen"/>
                     <div class="float-left align-left"><?php echo $this->hyperlink($object['dname'], array(
                         'controller' => 'objects',
                         'action' => 'details',
@@ -84,26 +88,34 @@ $this->headTitle('Account Einstellungen');
                     <div class="clear"></div>
                 </div>
 <?php
-    }
+        }
 ?>
-            </div>
-            <div class="subCategory">
-                <div class="subCategoryTitle">Forschungen</div>
+                <input class="deleteButton" type="submit" value="Löschen"/>
+            </div></form>
 <?php
-    $index = 0;
-    foreach($this->userSettings['userLevelResearch'] as $objectId => $object)
-    {
-        $index++;
-        if(($index % 2) == 0)
+    }
+    if (count($this->userSettings['userLevelResearch']) > 0) {
+?>
+            <form action="<?php echo $this->url(array('controller' => 'user', 'action' => 'deletetechs')); ?>" method="post"><div class="subCategory">
+                <input class="deleteButton" type="submit" value="Löschen"/>
+                <input type="hidden" name="deletionType" value="research"/>
+                <div class="subCategoryTitle"><input type="checkbox" onclick="checkAll(this);"/>Forschungen</div>
+<?php
+        $index = 0;
+        foreach($this->userSettings['userLevelResearch'] as $objectId => $object)
         {
-            $styleSuffix = 'Dark';
-        }
-        else
-        {
-            $styleSuffix = '';
-        }
+            $index++;
+            if(($index % 2) == 0)
+            {
+                $styleSuffix = 'Dark';
+            }
+            else
+            {
+                $styleSuffix = '';
+            }
 ?>
                 <div class="subCategoryItem<?php echo $styleSuffix; ?>">
+                    <input class="float-left align-left" type="checkbox" name="techId[]" value="<?php echo $objectId; ?>" title="Löschen"/>
                     <div class="float-left align-left"><?php echo $this->hyperlink($object['dname'], array(
                         'controller' => 'objects',
                         'action' => 'details',
@@ -113,7 +125,22 @@ $this->headTitle('Account Einstellungen');
                     <div class="clear"></div>
                 </div>
 <?php
+        }
+?>
+                <input class="deleteButton" type="submit" value="Löschen"/>
+            </div></form>
+<?php
     }
 ?>
-            </div>
         </div>
+<script type="text/javascript">
+<?php $this->jQuery()->javascriptCaptureStart(); ?>
+function checkAll(obj)
+{
+    var checkState = $(obj)[0].checked;
+    $(obj).parents('form').find('input[name="techId[]"]').each(function() {
+        $(this)[0].checked = checkState;
+    });
+}
+<?php $this->jQuery()->javascriptCaptureEnd(); ?>
+</script>

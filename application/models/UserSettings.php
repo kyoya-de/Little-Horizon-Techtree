@@ -252,5 +252,15 @@ class Application_Model_UserSettings extends TechTree_Db_Model
         }
         return $objects;
     }
+
+    public function deleteUserTechs($userTechsId, $userPlanet, $userTechs)
+    {
+        $userTechs = implode("', '", $userTechs);
+        $sql = "DELETE FROM `tt_userlevel` WHERE
+            `userId` = '$userTechsId' AND
+            `planet` = '$userPlanet' AND
+            `techid` IN ('$userTechs')";
+        $this->_dbObject->exec($sql);
+    }
 }
 

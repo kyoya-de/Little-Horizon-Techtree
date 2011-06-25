@@ -163,4 +163,20 @@ class UserController extends Zend_Controller_Action
             )
         );
     }
+    public function deletetechsAction()
+    {
+        $userSettings = new Application_Model_UserSettings();
+        $authSession = TechTree_Session::getNamespace('Auth');
+        $planetId = $authSession->currentPlanet;
+        if ($this->_request->getParam('deletionType', 'planet') == 'research') {
+            $planetId = 'Forschungen';
+        }
+
+        $userSettings->deleteUserTechs(
+            $authSession->techsId,
+            $planetId,
+            $this->_request->getParam('techId', array())
+        );
+        $this->_redirect('user/settings');
+    }
 }
