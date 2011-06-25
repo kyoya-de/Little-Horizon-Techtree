@@ -9,7 +9,7 @@
  * @version    4.1.2
  * @author     Stefan Krenz
  *
- * $ID: $
+ * $Id: $
  */
 
 /**
