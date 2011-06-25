@@ -1,29 +1,35 @@
 <?php
 /**
- * Class to store and retrieve the version of TechTree.
+ * This file is a part of the Little Horizon Community TechTree project.
+ * The whole project is licensed under the terms of the MIT license.
+ * Take a look at the LICENSE file for information your rights.
  *
- * @author Darky
+ * @package    Little-Horizon-TechTree
+ * @subpackage Library
+ * @version    4.1.2
+ * @author     Stefan Krenz
+ */
+
+/**
+ * Class to store version information.
+ *
+ * @package    Little-Horizon-TechTree
+ * @subpackage Library
  */
 class TechTree_Version
 {
+    /**
+     * Current project version.
+     */
     const VERSION = '4.1.2';
-    
-    const CODENAME = 'Tongue';
 
     /**
-     * Compare the specified TechTree version string $version
-     * with the current TechTree_Version::VERSION of TechTree.
+     * Current codename of the project.
+     * It may change an every minor version update.
+     * If the major version changes, the source of the name pool will be also changed.
      *
-     * @param  string  $version  A version string (e.g. "0.7.1").
-     * @return boolean           -1 if the $version is older,
-     *                           0 if they are the same,
-     *                           and +1 if $version is newer.
-     *
+     * Name pool in version 4: human organs
+     * Name pool in version 5: eras
      */
-    public static function compareVersion($version)
-    {
-        $version = strtolower($version);
-        $version = preg_replace('/(\d)pr(\d?)/', '$1a$2', $version);
-        return version_compare($version, strtolower(self::VERSION));
-    }
+    const CODENAME = 'Tongue';
 }

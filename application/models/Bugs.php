@@ -1,7 +1,33 @@
 <?php
+/**
+ * This file is a part of the Little Horizon Community TechTree project.
+ * The whole project is licensed under the terms of the MIT license.
+ * Take a look at the LICENSE file for information your rights.
+ *
+ * @package    Little-Horizon-TechTree
+ * @subpackage Models
+ * @version    4.1.2
+ * @author     Stefan Krenz
+ *
+ * $ID: $
+ */
 
+/**
+ * Class to manage bug tickets.
+ *
+ * @package    Little-Horizon-TechTree
+ * @subpackage Models
+ */
 class Application_Model_Bugs extends TechTree_Db_Model
 {
+    /**
+     * Assign a bug ticket to a admin.
+     *
+     * @param int $bugId   ID of the bug to assign
+     * @param int $adminId User ID of the admin to assign to
+     *
+     * @return void
+     */
     public function assign($bugId, $adminId)
     {
         $bugSql = 'UPDATE `tt_bugs` SET `assignId` = ' .
@@ -9,6 +35,15 @@ class Application_Model_Bugs extends TechTree_Db_Model
             $this->_dbObject->quote($bugId);
         $this->_dbObject->query($bugSql);
     }
+
+    /**
+     * Sets the status of a bug ticket.
+     *
+     * @param int    $bugId  Id of the bug ticket
+     * @param string $status New status of the bug ticket
+     *
+     * @return void
+     */
     public function setState($bugId, $status)
     {
         $priority = 1;
@@ -21,6 +56,11 @@ class Application_Model_Bugs extends TechTree_Db_Model
         $this->_dbObject->query($bugSql);
     }
 
+    /**
+     * Retrieves an array with all bug tickets.
+     *
+     * @return array
+     */
     public function getBugs()
     {
         $bugsSql = "SELECT bug.`id`, bug.`title`, bug.`description`, bug.`status`, bug.`assignId`, reporter.`username`
@@ -47,6 +87,15 @@ class Application_Model_Bugs extends TechTree_Db_Model
         return $bugs;
     }
 
+    /**
+     * Creates a new bug ticket.
+     *
+     * @param int    $userId  User Id of the ticket creator
+     * @param string $summary Summary of the bug
+     * @param string $details Detailed information about the bug
+     *
+     * @return void
+     */
     public function reportBug($userId, $summary, $details)
     {
         $data = array(
@@ -59,6 +108,13 @@ class Application_Model_Bugs extends TechTree_Db_Model
         $pdoState->execute($data);
     }
 
+    /**
+     * Retrieves all comments for the given bug.
+     *
+     * @param int $bugId ID of the bug ticket
+     *
+     * @return array
+     */
     public function getBugComments($bugId)
     {
         $pdoState = $this->_dbObject->query(

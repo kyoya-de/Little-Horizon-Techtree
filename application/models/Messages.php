@@ -1,4 +1,21 @@
 <?php
+/**
+ * This file is a part of the Little Horizon Community TechTree project.
+ * The whole project is licensed under the terms of the MIT license.
+ * Take a look at the LICENSE file for information your rights.
+ *
+ * @package    Little-Horizon-TechTree
+ * @subpackage Models
+ * @version    4.1.2
+ * @author     Stefan Krenz
+ */
+
+/**
+ * Provides methods to manage messages.
+ * 
+ * @package    Little-Horizon-TechTree
+ * @subpackage Models
+ */
 class Application_Model_Messages extends TechTree_Db_Model
 {
     /**
@@ -48,6 +65,7 @@ class Application_Model_Messages extends TechTree_Db_Model
      * Deletes a message.
      *
      * @param string $messageId Id of the message to delete.
+     * @param int    $userId    User ID of the recipient
      *
      * @return bool
      */
@@ -75,10 +93,11 @@ class Application_Model_Messages extends TechTree_Db_Model
     /**
      * Puts (sends) a new message into the database.
      *
-     * @param string $from    User ID of the sender
-     * @param string $to      User ID of the recipient
-     * @param string $subject Message subject
-     * @param string $message Message body
+     * @param string $from        User ID of the sender
+     * @param string $to          User ID of the recipient
+     * @param string $subject     Message subject
+     * @param string $message     Message body
+     * @param string $messageType Type of the message
      * 
      * @return bool|string
      */

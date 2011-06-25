@@ -1,6 +1,29 @@
 <?php
+/**
+ * This file is a part of the Little Horizon Community TechTree project.
+ * The whole project is licensed under the terms of the MIT license.
+ * Take a look at the LICENSE file for information your rights.
+ *
+ * @package    Little-Horizon-TechTree
+ * @subpackage Models
+ * @version    4.1.2
+ * @author     Stefan Krenz
+ */
+
+/**
+ * Provides methods to manage users.
+ *
+ * @package    Little-Horizon-TechTree
+ * @subpackage Models
+ */
 class Application_Model_Users extends TechTree_Db_Model
 {
+    /**
+     * Retrieves a array that contains the administrators.
+     * The key is the user ID and the value is the name of the admin.
+     *
+     * @return array
+     */
     public function getAdmins()
     {
         $adminSql = 'SELECT `id`, `username` FROM `tt_users` WHERE ' .
@@ -19,6 +42,12 @@ class Application_Model_Users extends TechTree_Db_Model
         
         return $admins;
     }
+
+    /**
+     * Retrieves the states of bug tickets.
+     *
+     * @return array
+     */
     public function getStates()
     {
         $statesSql = 'SELECT `COLUMN_COMMENT` FROM ' .
@@ -34,6 +63,15 @@ class Application_Model_Users extends TechTree_Db_Model
         }
         return $result;
     }
+
+    /**
+     * Retrieves an array with currently active users.
+     * The key is the user ID and the value is the name of the users.
+     *
+     * @param string $userId Exclude this user ID from the result list.
+     *
+     * @return array
+     */
     public function getActiveUsers($userId = null)
     {
         $usersSql = 'SELECT `id`, `username` FROM `tt_users` WHERE `active` = 1';

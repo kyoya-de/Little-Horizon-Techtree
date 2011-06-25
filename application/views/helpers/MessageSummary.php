@@ -1,12 +1,21 @@
 <?php
 /**
- * Created by JetBrains PhpStorm.
- * User: Darky
- * Date: 28.05.11
- * Time: 12:17
- * To change this template use File | Settings | File Templates.
+ * This file is a part of the Little Horizon Community TechTree project.
+ * The whole project is licensed under the terms of the MIT license.
+ * Take a look at the LICENSE file for information your rights.
+ *
+ * @package    Little-Horizon-TechTree
+ * @subpackage View_Helpers
+ * @version    4.1.2
+ * @author     Stefan Krenz
  */
- 
+
+/**
+ * This view helper builds the message summary for the user.
+ *
+ * @package    Little-Horizon-TechTree
+ * @subpackage View_Helpers
+ */
 class Zend_View_Helper_MessageSummary extends Zend_View_Helper_Abstract
 {
     public function messageSummary()
