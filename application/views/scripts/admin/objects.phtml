@@ -37,7 +37,7 @@ foreach ($this->tree as $root) {
         <div class="l4<?php echo $darkClass; ?>"><a href="<?php echo $this->url(array(
             'controller' => 'admin',
             'action' => 'object',
-            'id' => $item['id'],
+            'id' => $itemName,
         ));?>"><?php echo $this->escape($item['dname']);?></a> (<?php echo $itemName; ?>)<span class="last-update"><?php echo sprintf('[LFT %04u - RGT: %04u]', $item['lft'], $item['rgt']); ?></span></div>
 <?php
             }
