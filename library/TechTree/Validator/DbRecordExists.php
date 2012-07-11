@@ -1,33 +1,46 @@
 <?php
-class TechTree_Validator_DbRecordExists extends TechTree_Validator_Db
-    implements Zend_Validate_Interface
+class TechTree_Validator_DbRecordExists extends TechTree_Validator_Db implements Zend_Validate_Interface
 {
+    /**
+     * Validates, that a record exist in database.
+     *
+     * @param mixed $value Value to identify the record.
+     *
+     * @return bool
+     */
     public function isValid($value)
     {
         $this->_isValid = false;
-        $checkSql = 'SELECT `' . $this->_columnName . '` FROM `' .
-            $this->_tableName . '` WHERE `' . $this->_columnName . '` = :VALUE';
-        
+        $checkSql       = 'SELECT `' . $this->_columnName . '` FROM `' .
+                          $this->_tableName . '` WHERE `' . $this->_columnName . '` = :VALUE';
+
         $preparedStatement = $this->_dbObject->prepare($checkSql);
-        
+
         $pdoResult = $preparedStatement->execute(array('VALUE' => $value));
-        
+
         if ($pdoResult != true) {
             return false;
         }
-        
+
         $resultRow = $preparedStatement->fetch(PDO::FETCH_ASSOC);
-        
+
         if ($resultRow === false) {
             return false;
         }
-        
+
         $preparedStatement->closeCursor();
-        
+
         $this->_isValid = true;
         return true;
     }
-    
+
+    /**
+     * Retrieves the validation messages.
+     *
+     * @throws TechTree_Validator_Exception
+     *
+     * @return array
+     */
     public function getMessages()
     {
         if ($this->_isValid === null) {
@@ -35,15 +48,15 @@ class TechTree_Validator_DbRecordExists extends TechTree_Validator_Db
                 'You must call \'isValid()\' first.'
             );
         }
-        
+
         if ($this->_isValid) {
             return array();
         }
-        
+
         if (!$this->_isValid) {
             return array(
                 'DB_RECORD_EXISTS' => 'A record with this value doesn\'t ' .
-                    'exists in DB.'
+                                      'exists in DB.'
             );
         }
     }

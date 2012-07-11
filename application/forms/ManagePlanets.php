@@ -9,15 +9,15 @@ class Application_Form_ManagePlanets extends Zend_Form
             'decorator'
         );
         $userSettings = new Application_Model_UserSettings();
-        $authSession = TechTree_Session::getNamespace('Auth');
-        $planets = $userSettings->getRegisteredPlanets($authSession->techsId);
+        $authSession  = TechTree_Session::getNamespace('Auth');
+        $planets      = $userSettings->getRegisteredPlanets($authSession->techsId);
         $this->addElement(
             'select',
             'planet',
             array(
-                'label' => 'Planet',
-                'multiOptions' => $planets,
-                'decorators' => array('Login'),
+                'label'                        => 'Planet',
+                'multiOptions'                 => $planets,
+                'decorators'                   => array('Login'),
                 'DisableLoadDefaultDecorators' => true,
             )
         );
@@ -25,9 +25,9 @@ class Application_Form_ManagePlanets extends Zend_Form
             'checkbox',
             'deletePlanet',
             array(
-                'label' => 'Gewählten Planet löschen',
-                'checkedvalue' => '1',
-                'decorators' => array('Login'),
+                'label'                        => 'Gewählten Planet löschen',
+                'checkedvalue'                 => '1',
+                'decorators'                   => array('Login'),
                 'DisableLoadDefaultDecorators' => true,
             )
         );
@@ -35,8 +35,8 @@ class Application_Form_ManagePlanets extends Zend_Form
             'text',
             'newPlanet',
             array(
-                'label' => 'Neuer Planet',
-                'decorators' => array('Login'),
+                'label'                        => 'Neuer Planet',
+                'decorators'                   => array('Login'),
                 'DisableLoadDefaultDecorators' => true,
             )
         );
@@ -44,9 +44,9 @@ class Application_Form_ManagePlanets extends Zend_Form
             'hidden',
             'settings_type',
             array(
-                'label' => '',
-                'value' => 'managePlanet',
-                'decorators' => array('Login'),
+                'label'                        => '',
+                'value'                        => 'managePlanet',
+                'decorators'                   => array('Login'),
                 'DisableLoadDefaultDecorators' => true,
             )
         );
@@ -54,8 +54,8 @@ class Application_Form_ManagePlanets extends Zend_Form
             'submit',
             'manage',
             array(
-                'label' => '',
-                'value' => 'Speichern',
+                'label'      => '',
+                'value'      => 'Speichern',
                 'decorators' => array('Login'),
             )
         );
@@ -64,7 +64,7 @@ class Application_Form_ManagePlanets extends Zend_Form
             $view->url(
                 array(
                     'controller' => 'user',
-                    'action' => 'settings',
+                    'action'     => 'settings',
                 ),
                 null,
                 true

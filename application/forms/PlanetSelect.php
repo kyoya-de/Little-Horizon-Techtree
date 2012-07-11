@@ -3,6 +3,7 @@
 class Application_Form_PlanetSelect extends Zend_Form
 {
     private static $_planets = array();
+
     public function init()
     {
         $onChange = 'document.getElementById(\'planet_select\').submit();';
@@ -11,18 +12,18 @@ class Application_Form_PlanetSelect extends Zend_Form
             'select',
             'planet',
             array(
-                'label' => '',
-                'onchange' => $onChange,
-                'multiOptions' => self::$_planets,
-                'decorators' => array('ViewHelper'),
+                'label'                        => '',
+                'onchange'                     => $onChange,
+                'multiOptions'                 => self::$_planets,
+                'decorators'                   => array('ViewHelper'),
                 'disableLoadDefaultDecorators' => true,
             )
         );
         $frontController = Zend_Controller_Front::getInstance();
-        $currentParams = $frontController->getRequest()->getParams();
-        $actionParams = array(
+        $currentParams   = $frontController->getRequest()->getParams();
+        $actionParams    = array(
             'controller' => 'user',
-            'action' => 'set-planet',
+            'action'     => 'set-planet',
         );
         foreach ($currentParams as $key => $value) {
             $actionParams['last-' . $key] = $value;

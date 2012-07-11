@@ -4,8 +4,8 @@
  *
  * Die Klassenkonstanten sind global mit dem Präfix <i>DEBUG_</i> verfügbar.
  *
- * @author D4rk4ng3l
- * @version 0.3
+ * @author    D4rk4ng3l
+ * @version   0.3
  * @copyright 2010 Stefan 'D4rk4ng3l' Krenz
  */
 class Debug
@@ -39,7 +39,7 @@ class Debug
     /**
      * Alias für {@link Debug::OUTPUT_JAVASCRIPT}
      */
-    const OUTPUT_JS         = 0x000005;
+    const OUTPUT_JS = 0x000005;
 
     /**
      * Backtrace-Ausgabe deaktivieren.
@@ -120,7 +120,7 @@ class Debug
         self::OUTPUT_FILE           => array(__CLASS__, 'defaultCallback'),
         self::OUTPUT_JAVASCRIPT     => array(__CLASS__, 'defaultCallback'),
     );
-    
+
     /**
      * Speichert den Inhalt der zuletzt ausgegebenen Variablen.
      *
@@ -147,7 +147,7 @@ class Debug
 
     /**
      * Speichert den Dateinamen für die Dateiausgabe.
-     * 
+     *
      * Siehe auch: {@link Debug::OUTPUT_FILE}
      *
      * @var string Dateiname für die Debug-Ausgabe
@@ -156,6 +156,8 @@ class Debug
 
     /**
      * Deaktivierter Konstruktor. Klasse ist nur statisch zu benutzen.
+     *
+     * @return Debug
      */
     private function __construct()
     {
@@ -163,14 +165,16 @@ class Debug
 
     /**
      * Deaktiviertes klonen.
+     *
+     * @return Debug
      */
     private function __clone()
     {
     }
-    
+
     /**
      * Gibt eine typbasierte Ausgabe zurück.
-     * 
+     *
      * Ist $arg ein Array, so wird 'Array' zurückgeben.
      * Ist $arg ein Objekt, so wird der Name der Klasse zurückgeben.
      * Ist $arg ein Boolean, so wird 'TRUE' bzw. 'FALSE' zurückgeben.
@@ -180,7 +184,7 @@ class Debug
      * so wird die Variable selbst zurückgegeben.
      *
      * @param mixed $arg Funktionparameter
-     * 
+     *
      * @return mixed
      */
     private static function getArg($arg)
@@ -201,6 +205,16 @@ class Debug
         return $result;
     }
 
+    /**
+     * Returns the debug backtrace.
+     *
+     * @param array $backtrace           The backtrace.
+     * @param int   $outputBacktraceType Type of the backtrace to put out.
+     *
+     * @static
+     *
+     * @return string
+     */
     private static function _getBacktrace($backtrace, $outputBacktraceType)
     {
         $outputBacktrace = '';
@@ -209,30 +223,42 @@ class Debug
                 break;
             case self::BACKTRACE_SIMPLE:
                 $outputBacktrace = 'Debugoutput called from '
-                    . $backtrace[0]['file'] . '['
-                    . $backtrace[0]['line'] . ']';
+                                   . $backtrace[0]['file'] . '['
+                                   . $backtrace[0]['line'] . ']';
                 break;
             case self::BACKTRACE_COMPLETE:
                 foreach ($backtrace as $traceNum => $trace) {
-                    $args = (count($trace['args']) > 0) ? 
+                    $args = (count($trace['args']) > 0) ?
                         self::getArg($trace['args'][0]) : '';
                     for ($i = 1; $i < count($trace['args']); $i++) {
                         $args .= ', ' . self::getArg($trace['args'][$i]);
                     }
                     $outputBacktrace .= '#' . $traceNum . ': ' . $trace['file']
-                        . '[' . $trace['line'] . '] ' . $trace['class']
-                        . $trace['type'] . $trace['function'] . '('
-                        . $args . ")\n";
+                                        . '[' . $trace['line'] . '] ' . $trace['class']
+                                        . $trace['type'] . $trace['function'] . '('
+                                        . $args . ")\n";
                 }
                 break;
             default:
                 $outputBacktrace = 'Debugoutput called from '
-                    . $backtrace[0]['file'] . '[' . $backtrace[0]['line'] . ']';
+                                   . $backtrace[0]['file'] . '[' . $backtrace[0]['line'] . ']';
                 break;
         }
         return $outputBacktrace;
     }
-    
+
+    /**
+     * Put debugging results into the output handle.
+     *
+     * @param int    $outputFormatType   Type of the format to put out.
+     * @param int    $outputBacktrace    Type of the backtrace to put out.
+     * @param string $dumpedVar          Dump of the variable.
+     * @param int    $outputHtmlModeType HTML specification.
+     *
+     * @static
+     *
+     * @return void
+     */
     private static function _doOutput(
         $outputFormatType,
         $outputBacktrace,
@@ -247,10 +273,10 @@ class Debug
                 break;
             case self::OUTPUT_HTML:
                 echo '<strong>' .
-                    nl2br(
-                        $outputBacktrace,
-                        ($outputHtmlModeType == self::HTMLMODE_XHTML)
-                    ) . '</strong>' . self::$_htmlLineBreak;
+                     nl2br(
+                         $outputBacktrace,
+                         ($outputHtmlModeType == self::HTMLMODE_XHTML)
+                     ) . '</strong>' . self::$_htmlLineBreak;
                 echo '<pre>';
                 echo htmlspecialchars($dumpedVar);
                 echo '</pre>';
@@ -258,7 +284,7 @@ class Debug
             case self::OUTPUT_HTML_COMMENT:
                 echo '<!--' . "\n" . $outputBacktrace . "\n\n";
                 echo $dumpedVar;
-                echo "\n" . '-->'. "\n";
+                echo "\n" . '-->' . "\n";
                 break;
             case self::OUTPUT_FILE:
                 $output = $outputBacktrace . "\n";
@@ -274,23 +300,23 @@ class Debug
                 echo "\n*/\n";
         }
     }
-    
+
     /**
      * Standard Callback-Funktion
-     * 
+     *
      * Siehe auch: {@link Debug::$_callbacks}
      *
-     * @param mixed $var Variable, die ausgegeben werden soll.
-     * @param array $backtrace Backtrace des Aufrufs von <i>Debug::out()</i>
-     * @param int $outputFormat Ausgabe-Format
-     * 
+     * @param mixed $var          Variable, die ausgegeben werden soll.
+     * @param array $backtrace    Backtrace des Aufrufs von <i>Debug::out()</i>
+     * @param int   $outputFormat Ausgabe-Format
+     *
      * @return void
      */
     public static function defaultCallback($var, $backtrace, $outputFormat)
     {
-        $outputFormatType = ($outputFormat | 0xFFFFFF00) ^ 0xFFFFFF00;
+        $outputFormatType    = ($outputFormat | 0xFFFFFF00) ^ 0xFFFFFF00;
         $outputBacktraceType = ($outputFormat | 0xFFFF00FF) ^ 0xFFFF00FF;
-        $outputHtmlModeType = ($outputFormat | 0xFF00FFFF) ^ 0xFF00FFFF;
+        $outputHtmlModeType  = ($outputFormat | 0xFF00FFFF) ^ 0xFF00FFFF;
 
         if ($outputFormatType == 0) {
             $outputFormatType = self::$_outputMode;
@@ -305,7 +331,7 @@ class Debug
         }
 
         self::$_htmlLineBreak = nl2br(
-            "\n", 
+            "\n",
             ($outputHtmlModeType == self::HTMLMODE_XHTML)
         );
 
@@ -328,26 +354,27 @@ class Debug
     }
 
     /**
-     * Erzeugt eine Ausgabe, die beim Auffinden
-     * von Fehlern (debugging) unterstützt.
+     * Erzeugt eine Ausgabe, die beim Auffinden von Fehlern (debugging) unterstützt.
      *
-     * @param mixed $var Variable, die ausgegeben werden soll.
-     * @param int $outputFormat Format für die Ausgabe.
-     * 
+     * @param mixed $var          Variable, die ausgegeben werden soll.
+     * @param int   $outputFormat Format für die Ausgabe.
+     *
+     * @throws Exception
+     *
      * @return void
      */
     public static function out($var, $outputFormat = null)
     {
         if ($outputFormat === null) {
-            $outputFormat = self::$_outputMode | 
-                self::$_backtraceMode | 
-                self::$_htmlMode;
+            $outputFormat = self::$_outputMode |
+                            self::$_backtraceMode |
+                            self::$_htmlMode;
         }
 
         $outputFormatType = ($outputFormat | 0xFFFFFF00) ^ 0xFFFFFF00;
         if ($outputFormatType == 0) {
             $outputFormatType = self::$_outputMode;
-            $outputFormat = self::$_outputMode | $outputFormat;
+            $outputFormat     = self::$_outputMode | $outputFormat;
         }
         $backtrace = debug_backtrace();
         if (isset(self::$_callbacks[$outputFormatType])) {
@@ -357,13 +384,13 @@ class Debug
             );
         } else {
             $message = 'Für das angegebene Ausgabeformat wurde keine '
-                . 'Callback-Funktion definiert. Format: 0x'
-                . sprintf('%8.8X', $outputFormatType);
+                       . 'Callback-Funktion definiert. Format: 0x'
+                       . sprintf('%8.8X', $outputFormatType);
             throw new Exception($message);
         }
 
         self::$_lastBacktrace = $backtrace;
-        self::$_lastVariable = $var;
+        self::$_lastVariable  = $var;
     }
 
     /**
@@ -396,7 +423,7 @@ class Debug
      * Callback-Funktionen {@link Debug::$_callbacks}
      *
      * Die Callback-Funktion muss dem folgenden Format entsprechen:
-     * @method null callback($var, $backtrace, $outputFormat)
+     * callback($var, $backtrace, $outputFormat)
      * {@link Debug::defaultCallback()}
      *
      * Benutze für das Ausgabeformat ($outputFormat)
@@ -412,9 +439,9 @@ class Debug
      * Zusätzliche Ausgabeinformationen können in den
      * Bytes 3 und 4 (0xFFFF0000) übergeben werden.
      *
-     * @param mixed $outputFormat Ausgabeformat
+     * @param mixed $outputFormat     Ausgabeformat
      * @param mixed $callbackFunction Informationen über die Callback-Funktion
-     * 
+     *
      * @return bool
      */
     public static function registerCallbackFunction(
@@ -435,6 +462,8 @@ class Debug
      * Entfernt eine Callback-Funktion vom Stack.
      *
      * @param int $outputFormat Ausgabeformat
+     *
+     * @return void
      */
     public static function unregisterCallbackFunction($outputFormat)
     {
@@ -446,6 +475,8 @@ class Debug
      * {@link Debug::$_outputMode}
      *
      * @param int $outputMode Ausgabemodus
+     *
+     * @return void
      */
     public static function setDefaultOutputMode($outputMode)
     {
@@ -457,6 +488,8 @@ class Debug
      *  {@link Debug::$_backtraceMode}
      *
      * @param int $backtraceMode Backtrace-Modus
+     *
+     * @return void
      */
     public static function setDefaultBacktraceMode($backtraceMode)
     {
@@ -468,6 +501,8 @@ class Debug
      *  {@link Debug::$_htmlMode}
      *
      * @param int $htmlMode HTML-Modus
+     *
+     * @return void
      */
     public static function setDefaultHtmlMode($htmlMode)
     {
@@ -479,6 +514,8 @@ class Debug
      * {@link Debug::$_outputFilename}
      *
      * @param string $outputFilename Dateiname
+     *
+     * @return void
      */
     public static function setOutputFilename($outputFilename = 'debug.txt')
     {
@@ -487,7 +524,7 @@ class Debug
 }
 
 $debugReflection = new ReflectionClass('Debug');
-$constants = $debugReflection->getConstants();
+$constants       = $debugReflection->getConstants();
 foreach ($constants as $constantName => $constantValue) {
     define('DEBUG_' . $constantName, $constantValue);
 }

@@ -4,29 +4,29 @@ class Application_Model_UserSettings extends TechTree_Db_Model
 {
     public function getSettings($userId)
     {
-        $authSession = TechTree_Session::getNamespace('Auth');
-        $userSql = 'SELECT `style`, `techs_id`, `account_type` ' .'
+        $authSession  = TechTree_Session::getNamespace('Auth');
+        $userSql      = 'SELECT `style`, `techs_id`, `account_type` ' . '
             FROM `tt_users` WHERE `id` = :USERID';
         $pdoStatement = $this->_dbObject->prepare($userSql);
         $pdoStatement->execute(array('USERID' => $userId,));
         $basicSettings = $pdoStatement->fetch(PDO::FETCH_ASSOC);
         $pdoStatement->closeCursor();
-        
+
         $userLevelPlanet = $this->getPlanetTechs(
             $authSession->techsId,
             $authSession->currentPlanet
         );
         ksort($userLevelPlanet);
-        
+
         $userLevelResearch = $this->getPlanetTechs(
             $authSession->techsId,
             'Forschungen'
         );
         ksort($userLevelResearch);
-        
+
         return array(
-            'basicSettings' => $basicSettings,
-            'userLevelPlanet' => $userLevelPlanet,
+            'basicSettings'     => $basicSettings,
+            'userLevelPlanet'   => $userLevelPlanet,
             'userLevelResearch' => $userLevelResearch,
         );
     }
@@ -37,15 +37,15 @@ class Application_Model_UserSettings extends TechTree_Db_Model
             return array();
         }
         $planetTechsSql = 'SELECT l.`techid`, l.`level`, u.`dname` FROM ' .
-            '`tt_userlevel` l LEFT JOIN `tt_units` u ON ' .
-            'u.`name` = l.`techid` WHERE l.`userid` = :USERID AND ' .
-            'l.`planet` = :PLANET';
-        $pdoStatement = $this->_dbObject->prepare($planetTechsSql);
-        $data = array(
+                          '`tt_userlevel` l LEFT JOIN `tt_units` u ON ' .
+                          'u.`name` = l.`techid` WHERE l.`userid` = :USERID AND ' .
+                          'l.`planet` = :PLANET';
+        $pdoStatement   = $this->_dbObject->prepare($planetTechsSql);
+        $data           = array(
             'USERID' => $techId,
             'PLANET' => $planet,
         );
-        $pdoResult = $pdoStatement->execute($data);
+        $pdoResult      = $pdoStatement->execute($data);
         if ($pdoResult === false) {
         }
         $result = array();
@@ -62,11 +62,11 @@ class Application_Model_UserSettings extends TechTree_Db_Model
     {
         if ($techId == null) {
             $authSession = TechTree_Session::getNamespace('Auth');
-            $techId = $authSession->techsId;
+            $techId      = $authSession->techsId;
         }
-        $planetsSql = 'SELECT `planet` FROM `tt_userlevel` ' .
-            'WHERE `userid` = :USERID AND NOT `planet` =\'Forschungen\' ' .
-            'GROUP BY `planet`';
+        $planetsSql   = 'SELECT `planet` FROM `tt_userlevel` ' .
+                        'WHERE `userid` = :USERID AND NOT `planet` =\'Forschungen\' ' .
+                        'GROUP BY `planet`';
         $pdoStatement = $this->_dbObject->prepare($planetsSql);
         $pdoStatement->execute(array('USERID' => $techId));
         $result = array();
@@ -75,7 +75,7 @@ class Application_Model_UserSettings extends TechTree_Db_Model
         }
         return $result;
     }
-    
+
     public function setBasicSettings($userId, array $settings)
     {
         $saveSql = 'UPDATE `tt_users` SET `active` = 1';
@@ -86,26 +86,27 @@ class Application_Model_UserSettings extends TechTree_Db_Model
         $settings += array('USERID' => $userId);
         $pdoStatement = $this->_dbObject->prepare($saveSql);
         $pdoStatement->execute($settings);
-        
-        TechTree_Session::getNamespace('Auth')->style = $settings['style'];
+
+        TechTree_Session::getNamespace('Auth')->style   = $settings['style'];
         TechTree_Session::getNamespace('Auth')->techsId = $settings['techs_id'];
     }
+
     public function setPassword($password)
     {
         $authSession = TechTree_Session::getNamespace('Auth');
         $passwordSql = 'UPDATE `tt_users` SET `password` = MD5(' .
-            $this->_dbObject->quote($password) . ') WHERE `id` = ' .
-            $authSession->id;
+                       $this->_dbObject->quote($password) . ') WHERE `id` = ' .
+                       $authSession->id;
         $this->_dbObject->query($passwordSql);
         $frontController = Zend_Controller_Front::getInstance();
-        $request = $frontController->getRequest();
+        $request         = $frontController->getRequest();
         if ($request->get('tt_autologin') !== null) {
-            $crypt = TechTree_Crypt::getInstance('lh_techtree');
-            $identity = $crypt->encrypt(
+            $crypt           = TechTree_Crypt::getInstance('lh_techtree');
+            $identity        = $crypt->encrypt(
                 $authSession->username . ':' . $password
             );
             $frontController = Zend_Controller_Front::getInstance();
-            $request = $frontController->getRequest();
+            $request         = $frontController->getRequest();
             setcookie(
                 'tt_autologin',
                 $identity . ':' . md5($identity),
@@ -115,19 +116,20 @@ class Application_Model_UserSettings extends TechTree_Db_Model
             );
         }
     }
+
     public function deletePlanet($planet)
     {
         $deleteSql = 'DELETE FROM `tt_userlevel` WHERE `planet` = ' .
-            $this->_dbObject->quote($planet);
+                     $this->_dbObject->quote($planet);
         $this->_dbObject->query($deleteSql);
     }
-    
+
     public function createPlanet($planet)
     {
         $createSql = 'INSERT INTO `tt_userlevel` ' .
-            '(`userid`, `planet`, `techid`, `level`) VALUES ' .
-            '(:techId, :planet, \'metalmine\', 0);';
-        $pdoState = $this->_dbObject->prepare($createSql);
+                     '(`userid`, `planet`, `techid`, `level`) VALUES ' .
+                     '(:techId, :planet, \'metalmine\', 0);';
+        $pdoState  = $this->_dbObject->prepare($createSql);
         $pdoState->execute(
             array(
                 'techId' => TechTree_Session::getNamespace('Auth')->techsId,
@@ -138,8 +140,8 @@ class Application_Model_UserSettings extends TechTree_Db_Model
 
     public function setNewPlanet($userId, $newPlanet)
     {
-        $saveSql = 'UPDATE `tt_users` SET `current_planet` = :PLANET ' .
-            'WHERE `id` = :USERID';
+        $saveSql      = 'UPDATE `tt_users` SET `current_planet` = :PLANET ' .
+                        'WHERE `id` = :USERID';
         $pdoStatement = $this->_dbObject->prepare($saveSql);
         $pdoStatement->execute(
             array(
@@ -148,7 +150,7 @@ class Application_Model_UserSettings extends TechTree_Db_Model
             )
         );
     }
-    
+
     public function getUserTechLevel($objectId, $planet = null)
     {
         $authSession = TechTree_Session::getNamespace('Auth');
@@ -158,10 +160,10 @@ class Application_Model_UserSettings extends TechTree_Db_Model
         if ($planet === null) {
             $planet = $authSession->currentPlanet;
         }
-        $techSql = 'SELECT `level` FROM `tt_userlevel` WHERE ' .
-            '`userid` = :userId AND `planet` = :planet AND `techid` = :techId';
-        $pdoState = $this->_dbObject->prepare($techSql);
-        $data = array(
+        $techSql   = 'SELECT `level` FROM `tt_userlevel` WHERE ' .
+                     '`userid` = :userId AND `planet` = :planet AND `techid` = :techId';
+        $pdoState  = $this->_dbObject->prepare($techSql);
+        $data      = array(
             'userId' => $authSession->techsId,
             'planet' => $planet,
             'techId' => $objectId,
@@ -174,34 +176,35 @@ class Application_Model_UserSettings extends TechTree_Db_Model
         $pdoState->closeCursor();
         return $row['level'];
     }
+
     public function parseUserTechs($source, $techsId = null, $planet = null)
     {
         if ($techsId === null) {
             $authSession = TechTree_Session::getNamespace('Auth');
-            $techsId = $authSession->techsId;
+            $techsId     = $authSession->techsId;
         }
         $replacements = array(
             "\r\n" => "\n",
             "\n\n" => "\n",
-            "\t" => " ",
-            "  " => " ",
+            "\t"   => " ",
+            "  "   => " ",
         );
-        $source = str_replace(
+        $source       = str_replace(
             array_keys($replacements),
             array_values($replacements),
             $source
         );
-        $sourceLines = explode("\n", $source);
-        $objects = array();
-        $deleteSql = 'DELETE FROM `tt_userlevel` WHERE `userid` = ' .
-            $this->_dbObject->quote($techsId) . ' AND ' .
-            '`planet` = :planet AND `techid` = :objectId';
-        $insertSql = 'INSERT INTO `tt_userlevel` (`userid`, `planet`, ' .
-            '`techid`, `level`) VALUES (' .
-            $this->_dbObject->quote($techsId) . ', :planet, ' .
-            ':objectId, :level)';
-        $delState = $this->_dbObject->prepare($deleteSql);
-        $insState = $this->_dbObject->prepare($insertSql);
+        $sourceLines  = explode("\n", $source);
+        $objects      = array();
+        $deleteSql    = 'DELETE FROM `tt_userlevel` WHERE `userid` = ' .
+                        $this->_dbObject->quote($techsId) . ' AND ' .
+                        '`planet` = :planet AND `techid` = :objectId';
+        $insertSql    = 'INSERT INTO `tt_userlevel` (`userid`, `planet`, ' .
+                        '`techid`, `level`) VALUES (' .
+                        $this->_dbObject->quote($techsId) . ', :planet, ' .
+                        ':objectId, :level)';
+        $delState     = $this->_dbObject->prepare($deleteSql);
+        $insState     = $this->_dbObject->prepare($insertSql);
 
         foreach ($sourceLines as $sourceLine) {
             $openBracket = strpos($sourceLine, '(');
@@ -211,7 +214,7 @@ class Application_Model_UserSettings extends TechTree_Db_Model
 
             $openBracket++;
             $firstSpace = strpos($sourceLine, ' ', $openBracket);
-            $objectId = substr(
+            $objectId   = substr(
                 $sourceLine,
                 $openBracket,
                 ($firstSpace - $openBracket)
@@ -221,15 +224,15 @@ class Application_Model_UserSettings extends TechTree_Db_Model
             $nextSpace++;
             $nextSpace = strpos($sourceLine, ' ', $nextSpace);
             $nextSpace++;
-            $closeBracket = strpos($sourceLine, ')');
-            $objectLevel = substr(
+            $closeBracket       = strpos($sourceLine, ')');
+            $objectLevel        = substr(
                 $sourceLine,
                 $nextSpace,
                 ($closeBracket - $nextSpace)
             );
             $objects[$objectId] = ($objectLevel != '') ? $objectLevel : 0;
-            $techtree = new Application_Model_TechTreeItems();
-            $objectPath = $techtree->getItemPath($objectId);
+            $techtree           = new Application_Model_TechTreeItems();
+            $objectPath         = $techtree->getItemPath($objectId);
             if ($planet === null) {
                 $planet = $authSession->currentPlanet;
             }
@@ -238,15 +241,15 @@ class Application_Model_UserSettings extends TechTree_Db_Model
             }
             $delState->execute(
                 array(
-                    'planet' => $planet,
+                    'planet'   => $planet,
                     'objectId' => $objectId,
                 )
             );
             $insState->execute(
                 array(
-                    'planet' => $planet,
+                    'planet'   => $planet,
                     'objectId' => $objectId,
-                    'level' => $objectLevel,
+                    'level'    => $objectLevel,
                 )
             );
         }
@@ -256,7 +259,7 @@ class Application_Model_UserSettings extends TechTree_Db_Model
     public function deleteUserTechs($userTechsId, $userPlanet, $userTechs)
     {
         $userTechs = implode("', '", $userTechs);
-        $sql = "DELETE FROM `tt_userlevel` WHERE
+        $sql       = "DELETE FROM `tt_userlevel` WHERE
             `userId` = '$userTechsId' AND
             `planet` = '$userPlanet' AND
             `techid` IN ('$userTechs')";

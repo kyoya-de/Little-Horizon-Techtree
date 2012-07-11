@@ -20,9 +20,9 @@ class Application_Form_Register extends Zend_Form
             'text',
             'username',
             array(
-                'label' => 'Nickname:',
-                'class' => 'input-username',
-                'required' => true,
+                'label'      => 'Nickname:',
+                'class'      => 'input-username',
+                'required'   => true,
                 'decorators' => array('Login'),
                 'validators' => array(
                     new TechTree_Validator_DbRecordNotExists(
@@ -37,9 +37,9 @@ class Application_Form_Register extends Zend_Form
             'password',
             'password',
             array(
-                'label' => 'Passwort',
-                'class' => 'input-password',
-                'required' => true,
+                'label'      => 'Passwort',
+                'class'      => 'input-password',
+                'required'   => true,
                 'decorators' => array('Login'),
                 'validators' => array('Password'),
             )
@@ -48,9 +48,9 @@ class Application_Form_Register extends Zend_Form
             'password',
             'password_confirm',
             array(
-                'label' => '... bestätigen',
-                'class' => 'input-password',
-                'required' => true,
+                'label'      => '... bestätigen',
+                'class'      => 'input-password',
+                'required'   => true,
                 'decorators' => array('Login'),
             )
         );
@@ -58,13 +58,13 @@ class Application_Form_Register extends Zend_Form
             'select',
             'default_style',
             array(
-                'label' => 'Standard-Layout',
-                'class' => 'select-style',
-                'decorators' => array('Login'),
+                'label'        => 'Standard-Layout',
+                'class'        => 'select-style',
+                'decorators'   => array('Login'),
                 'multiOptions' => array(
-                    'blue' => 'Blau',
+                    'blue'  => 'Blau',
                     'green' => 'Grün',
-                    'red' => 'Rot',
+                    'red'   => 'Rot',
                 )
             )
         );
@@ -72,8 +72,8 @@ class Application_Form_Register extends Zend_Form
             'submit',
             'submit',
             array(
-                'label' => '',
-                'value' => 'Registrieren',
+                'label'      => '',
+                'value'      => 'Registrieren',
                 'decorators' => array('Login'),
             )
         );
@@ -82,7 +82,7 @@ class Application_Form_Register extends Zend_Form
             $view->url(
                 array(
                     'controller' => 'user',
-                    'action' => 'register',
+                    'action'     => 'register',
                 ),
                 null,
                 true

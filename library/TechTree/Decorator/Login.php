@@ -1,10 +1,15 @@
 <?php
 class TechTree_Decorator_Login extends Zend_Form_Decorator_Abstract
 {
+    /**
+     * Renders the input label.
+     *
+     * @return string
+     */
     public function buildLabel()
     {
         $element = $this->getElement();
-        $label = $element->getLabel();
+        $label   = $element->getLabel();
         if (empty($label)) {
             return '';
         }
@@ -17,9 +22,14 @@ class TechTree_Decorator_Login extends Zend_Form_Decorator_Abstract
         }
         $label .= ':';
         return $element->getView()
-                       ->formLabel($element->getName(), $label);
+            ->formLabel($element->getName(), $label);
     }
 
+    /**
+     * Renders the input element.
+     *
+     * @return string
+     */
     public function buildInput()
     {
         $element = $this->getElement();
@@ -32,6 +42,11 @@ class TechTree_Decorator_Login extends Zend_Form_Decorator_Abstract
         );
     }
 
+    /**
+     * Renders the error messages.
+     *
+     * @return string
+     */
     public function buildErrors()
     {
         $element  = $this->getElement();
@@ -39,12 +54,17 @@ class TechTree_Decorator_Login extends Zend_Form_Decorator_Abstract
         if (empty($messages)) {
             return '';
         }
-        return 
+        return
             '<div class="errors">' .
             $element->getView()->formErrors($messages) .
             '</div>';
     }
 
+    /**
+     * Renders the description.
+     *
+     * @return string
+     */
     public function buildDescription()
     {
         $element = $this->getElement();
@@ -55,6 +75,13 @@ class TechTree_Decorator_Login extends Zend_Form_Decorator_Abstract
         return '<div class="description">' . $desc . '</div>';
     }
 
+    /**
+     * Renders a form input element.
+     *
+     * @param string $content Form content.
+     *
+     * @return string
+     */
     public function render($content)
     {
         $element = $this->getElement();
@@ -73,12 +100,12 @@ class TechTree_Decorator_Login extends Zend_Form_Decorator_Abstract
         $desc      = $this->buildDescription();
 
         $output = '<div class="form-element">' . PHP_EOL
-            . '<div class="form-input-label">' . $label . '</div>' . PHP_EOL
-            . '<div class="form-input">' . $input . '</div>' . PHP_EOL
-            . '<div class="clear"></div>' . PHP_EOL
-            . '<div class="form-input-error">' . $errors . '</div>' . PHP_EOL
-            . '<div class="form-input-desc">' . $desc . '</div>' . PHP_EOL
-            . '</div><div class="clear"></div>';
+                  . '<div class="form-input-label">' . $label . '</div>' . PHP_EOL
+                  . '<div class="form-input">' . $input . '</div>' . PHP_EOL
+                  . '<div class="clear"></div>' . PHP_EOL
+                  . '<div class="form-input-error">' . $errors . '</div>' . PHP_EOL
+                  . '<div class="form-input-desc">' . $desc . '</div>' . PHP_EOL
+                  . '</div><div class="clear"></div>';
 
         switch ($placement) {
             case (self::PREPEND):

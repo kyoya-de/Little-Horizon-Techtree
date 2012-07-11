@@ -31,8 +31,8 @@ class Application_Model_Bugs extends TechTree_Db_Model
     public function assign($bugId, $adminId)
     {
         $bugSql = 'UPDATE `tt_bugs` SET `assignId` = ' .
-            $this->_dbObject->quote($adminId) . ' WHERE `id` = ' .
-            $this->_dbObject->quote($bugId);
+                  $this->_dbObject->quote($adminId) . ' WHERE `id` = ' .
+                  $this->_dbObject->quote($bugId);
         $this->_dbObject->query($bugSql);
     }
 
@@ -51,8 +51,8 @@ class Application_Model_Bugs extends TechTree_Db_Model
             $priority = 0;
         }
         $bugSql = 'UPDATE `tt_bugs` SET `status` = ' .
-            $this->_dbObject->quote($status) . ', `priority` = ' .
-            $priority . ' WHERE `id` = ' . $this->_dbObject->quote($bugId);
+                  $this->_dbObject->quote($status) . ', `priority` = ' .
+                  $priority . ' WHERE `id` = ' . $this->_dbObject->quote($bugId);
         $this->_dbObject->query($bugSql);
     }
 
@@ -63,7 +63,7 @@ class Application_Model_Bugs extends TechTree_Db_Model
      */
     public function getBugs()
     {
-        $bugsSql = "SELECT bug.`id`, bug.`title`, bug.`description`, bug.`status`, bug.`assignId`, reporter.`username`
+        $bugsSql  = "SELECT bug.`id`, bug.`title`, bug.`description`, bug.`status`, bug.`assignId`, reporter.`username`
                     FROM `tt_bugs` bug
                     LEFT JOIN `tt_users` reporter ON reporter.`id` = bug.`reporterId`
                     ORDER BY `priority` DESC, `id` DESC";
@@ -76,12 +76,12 @@ class Application_Model_Bugs extends TechTree_Db_Model
 
         while (false !== ($row = $pdoState->fetch(PDO::FETCH_ASSOC))) {
             $bugs[$row['id']] = array(
-                'title' => $row['title'],
+                'title'       => $row['title'],
                 'description' => $row['description'],
-                'status' => $row['status'],
-                'reporter' => $row['username'],
-                'assigned' => $row['assignId'],
-                'comments' => $this->getBugComments($row['id']),
+                'status'      => $row['status'],
+                'reporter'    => $row['username'],
+                'assigned'    => $row['assignId'],
+                'comments'    => $this->getBugComments($row['id']),
             );
         }
         return $bugs;
@@ -98,13 +98,13 @@ class Application_Model_Bugs extends TechTree_Db_Model
      */
     public function reportBug($userId, $summary, $details)
     {
-        $data = array(
+        $data      = array(
             'USER_ID' => $userId,
-            'TITLE' => $summary,
-            'DESC' => $details,
+            'TITLE'   => $summary,
+            'DESC'    => $details,
         );
         $reportSql = "INSERT INTO `tt_bugs` (`reporterId`, `title`, `description`) VALUES (:USER_ID, :TITLE, :DESC)";
-        $pdoState = $this->_dbObject->prepare($reportSql);
+        $pdoState  = $this->_dbObject->prepare($reportSql);
         $pdoState->execute($data);
     }
 

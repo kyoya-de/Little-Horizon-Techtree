@@ -20,9 +20,9 @@ class Application_Form_Password extends Zend_Form
             'password',
             'password',
             array(
-                'label' => 'Passwort',
-                'class' => 'input-password',
-                'required' => true,
+                'label'      => 'Passwort',
+                'class'      => 'input-password',
+                'required'   => true,
                 'decorators' => array('Login'),
                 'validators' => array('Password'),
             )
@@ -31,9 +31,9 @@ class Application_Form_Password extends Zend_Form
             'password',
             'password_confirm',
             array(
-                'label' => '... bestätigen',
-                'class' => 'input-password',
-                'required' => true,
+                'label'      => '... bestätigen',
+                'class'      => 'input-password',
+                'required'   => true,
                 'decorators' => array('Login'),
             )
         );
@@ -41,8 +41,8 @@ class Application_Form_Password extends Zend_Form
             'submit',
             'submit',
             array(
-                'label' => '',
-                'value' => 'Passwort ändern',
+                'label'      => '',
+                'value'      => 'Passwort ändern',
                 'decorators' => array('Login'),
             )
         );
@@ -50,8 +50,8 @@ class Application_Form_Password extends Zend_Form
             'hidden',
             'settings_type',
             array(
-                'label' => '',
-                'value' => 'setPassword',
+                'label'      => '',
+                'value'      => 'setPassword',
                 'decorators' => array('Login'),
             )
         );
@@ -60,7 +60,7 @@ class Application_Form_Password extends Zend_Form
             $view->url(
                 array(
                     'controller' => 'user',
-                    'action' => 'settings',
+                    'action'     => 'settings',
                 ),
                 null,
                 true

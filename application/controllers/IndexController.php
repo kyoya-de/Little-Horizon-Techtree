@@ -8,11 +8,9 @@ class IndexController extends Zend_Controller_Action
 
     public function statisticsAction()
     {
-        $techtree = new Application_Model_TechTreeItems();
+        $techtree          = new Application_Model_TechTreeItems();
         $this->view->stats = $techtree->getStatistics();
     }
-
-
 }
 
 

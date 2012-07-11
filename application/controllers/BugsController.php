@@ -17,17 +17,17 @@ class BugsController extends Zend_Controller_Action
         if (is_array($url)) {
             $url = $this->view->url($url, null, true);
         }
-        
+
         $this->_response->setRedirect($url);
     }
 
     public function indexAction()
     {
-        $bugs = new Application_Model_Bugs();
-        $users = new Application_Model_Users();
+        $bugs               = new Application_Model_Bugs();
+        $users              = new Application_Model_Users();
         $this->view->admins = $users->getAdmins();
         $this->view->states = $users->getStates();
-        $this->view->bugs = $bugs->getBugs();
+        $this->view->bugs   = $bugs->getBugs();
     }
 
     public function assignAction()
@@ -43,7 +43,7 @@ class BugsController extends Zend_Controller_Action
         $this->_doRedirect(
             array(
                 'controller' => 'bugs',
-                'action' => 'index',
+                'action'     => 'index',
             )
         );
     }
@@ -61,7 +61,7 @@ class BugsController extends Zend_Controller_Action
         $this->_doRedirect(
             array(
                 'controller' => 'bugs',
-                'action' => 'index',
+                'action'     => 'index',
             )
         );
     }
@@ -74,13 +74,13 @@ class BugsController extends Zend_Controller_Action
             $this->view->url(
                 array(
                     'controller' => 'bugs',
-                    'action' => 'report',
+                    'action'     => 'report',
                 )
             )
         );
         if ($this->_request->isPost()) {
             if ($bugReportForm->isValid($this->_request->getParams())) {
-                $bugs = new Application_Model_Bugs();
+                $bugs        = new Application_Model_Bugs();
                 $authSession = TechTree_Session::getNamespace('Auth');
                 $bugs->reportBug(
                     $authSession->id,

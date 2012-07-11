@@ -14,8 +14,8 @@ class Application_Form_UserTechSettings extends Zend_Form
             'textarea',
             'user_techs',
             array(
-                'cols' => '53',
-                'rows' => '15',
+                'cols'       => '53',
+                'rows'       => '15',
                 'decorators' => array('Login'),
             )
         );
@@ -23,8 +23,8 @@ class Application_Form_UserTechSettings extends Zend_Form
             'submit',
             'save',
             array(
-                'label' => '',
-                'value' => 'Importieren',
+                'label'      => '',
+                'value'      => 'Importieren',
                 'decorators' => array('Login'),
             )
         );
@@ -32,8 +32,8 @@ class Application_Form_UserTechSettings extends Zend_Form
             'hidden',
             'settings_type',
             array(
-                'label' => '',
-                'value' => 'usertechs',
+                'label'      => '',
+                'value'      => 'usertechs',
                 'decorators' => array('Login'),
             )
         );
@@ -42,14 +42,12 @@ class Application_Form_UserTechSettings extends Zend_Form
             $view->url(
                 array(
                     'controller' => 'user',
-                    'action' => 'settings',
+                    'action'     => 'settings',
                 ),
                 null,
                 true
             )
         );
     }
-
-
 }
 

@@ -11,8 +11,8 @@ class EditController extends Zend_Controller_Action
                 $this->view->url(
                     array(
                         'controller' => 'objects',
-                        'action' => 'details',
-                        'id' => $this->_request->getParam('id', 'metalmine'),
+                        'action'     => 'details',
+                        'id'         => $this->_request->getParam('id', 'metalmine'),
                     ),
                     null,
                     true
@@ -28,17 +28,17 @@ class EditController extends Zend_Controller_Action
             }
         }
     }
-    
+
     public function commentAction()
     {
-        $authSession = TechTree_Session::getNamespace('Auth');
-        $techtree = new Application_Model_TechTreeItems();
-        $techtreeEdit = new Application_Model_TechTreeEdit();
-        $comment = null;
+        $authSession          = TechTree_Session::getNamespace('Auth');
+        $techtree             = new Application_Model_TechTreeItems();
+        $techtreeEdit         = new Application_Model_TechTreeEdit();
+        $comment              = null;
         $this->view->doAction = null;
         if ($this->_request->isPost()) {
-            $doAction = $this->_request->getParam('do', 'preview');
-            $comment = $this->_request->getParam('comment', ':P');
+            $doAction             = $this->_request->getParam('do', 'preview');
+            $comment              = $this->_request->getParam('comment', ':P');
             $this->view->doAction = $doAction;
             if ($doAction == 'save') {
                 $this->view->saveResult = $techtreeEdit->setComment(
@@ -55,17 +55,17 @@ class EditController extends Zend_Controller_Action
                     $this->_request->getParam('id'),
                     ''
                 );
-                $comment = '';
+                $comment                = '';
             }
         }
-        
+
         $this->view->item = $techtree->getItem(
             $this->_request->getParam('id', 'metalmine')
         );
         if ($comment === null) {
             $comment = $this->view->item['comment'];
         }
-        $types = $techtree->getItemTypes();
+        $types   = $techtree->getItemTypes();
         $objects = array();
         foreach ($types as $type) {
             $categories = $techtree->getTypeCategories($type['name']);
@@ -73,8 +73,8 @@ class EditController extends Zend_Controller_Action
                 $items = $techtree->getCategoryItems($category['name']);
                 foreach ($items as $item) {
                     $objects[$type['dname']]
-                        [$category['dname']]
-                            [$item['name']] = $item['dname'];
+                    [$category['dname']]
+                    [$item['name']] = $item['dname'];
                 }
             }
         }
@@ -84,21 +84,21 @@ class EditController extends Zend_Controller_Action
 
     public function newlevelAction()
     {
-        $techtree = new Application_Model_TechTreeItems();
+        $techtree          = new Application_Model_TechTreeItems();
         $this->view->types = $techtree->getItemTypes();
-        $this->view->item = $techtree->getItem(
+        $this->view->item  = $techtree->getItem(
             $this->_request->getParam('id', 'metalmine')
         );
     }
 
     public function levelAction()
     {
-        $techtree = new Application_Model_TechTreeItems();
-        $this->view->item = $techtree->getItem(
+        $techtree              = new Application_Model_TechTreeItems();
+        $this->view->item      = $techtree->getItem(
             $this->_request->getParam('id')
         );
-        $this->view->level = $this->_request->getParam('level');
-        $this->view->types = $techtree->getItemTypes();
+        $this->view->level     = $this->_request->getParam('level');
+        $this->view->types     = $techtree->getItemTypes();
         $this->view->depencies = $techtree->getLevelDepencies(
             $this->_request->getParam('id'),
             $this->_request->getParam('level')
@@ -111,7 +111,7 @@ class EditController extends Zend_Controller_Action
             foreach ($requireList as $requirement) {
                 list($depId, $depLevel) = explode(':', $requirement);
                 $requireData[] = array(
-                    'depId' => $depId,
+                    'depId'    => $depId,
                     'depLevel' => $depLevel,
                 );
             }
@@ -124,8 +124,8 @@ class EditController extends Zend_Controller_Action
             $redirectUrl = $this->view->url(
                 array(
                     'controller' => 'objects',
-                    'action' => 'details',
-                    'id' => $this->_request->getParam('id', 'metalmine'),
+                    'action'     => 'details',
+                    'id'         => $this->_request->getParam('id', 'metalmine'),
                 ),
                 null,
                 true
@@ -145,13 +145,12 @@ class EditController extends Zend_Controller_Action
             $this->view->url(
                 array(
                     'controller' => 'objects',
-                    'action' => 'details',
-                    'id' => $this->_request->getParam('id'),
+                    'action'     => 'details',
+                    'id'         => $this->_request->getParam('id'),
                 ),
                 null,
                 true
             )
         );
     }
-    
 }

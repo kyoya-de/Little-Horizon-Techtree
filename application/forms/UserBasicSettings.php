@@ -14,9 +14,9 @@ class Application_Form_UserBasicSettings extends Zend_Form
             'select',
             'style',
             array(
-                'label' => 'Style',
-                'class' => 'select-style',
-                'decorators' => array('Login'),
+                'label'        => 'Style',
+                'class'        => 'select-style',
+                'decorators'   => array('Login'),
                 'multiOptions' => TechTree_Utils::getAvailableStyles(),
             )
         );
@@ -25,9 +25,9 @@ class Application_Form_UserBasicSettings extends Zend_Form
             'text',
             'techs_id',
             array(
-                'label' => 'UserTechs ID',
-                'class' => 'input-techs-id',
-                'required' => true,
+                'label'      => 'UserTechs ID',
+                'class'      => 'input-techs-id',
+                'required'   => true,
                 'decorators' => array('Login'),
             )
         );
@@ -35,8 +35,8 @@ class Application_Form_UserBasicSettings extends Zend_Form
             'submit',
             'save',
             array(
-                'label' => '',
-                'value' => 'Speichern',
+                'label'      => '',
+                'value'      => 'Speichern',
                 'decorators' => array('Login'),
             )
         );
@@ -44,7 +44,7 @@ class Application_Form_UserBasicSettings extends Zend_Form
             'hidden',
             'user_id',
             array(
-                'label' => '',
+                'label'      => '',
                 'decorators' => array('Login'),
             )
         );
@@ -52,8 +52,8 @@ class Application_Form_UserBasicSettings extends Zend_Form
             'hidden',
             'settings_type',
             array(
-                'label' => '',
-                'value' => 'basic',
+                'label'      => '',
+                'value'      => 'basic',
                 'decorators' => array('Login'),
             )
         );
@@ -62,14 +62,12 @@ class Application_Form_UserBasicSettings extends Zend_Form
             $view->url(
                 array(
                     'controller' => 'user',
-                    'action' => 'settings',
+                    'action'     => 'settings',
                 ),
                 null,
                 true
             )
         );
     }
-
-
 }
 

@@ -7,9 +7,17 @@ class TechTree_Validator_Password extends Zend_Validate_Abstract
         self::NOT_MATCH => 'Password confirmation does not match'
     );
 
+    /**
+     * Validates the password and its confirmation.
+     *
+     * @param mixed $value   The given password.
+     * @param array $context An array with information about the context.
+     *
+     * @return bool
+     */
     public function isValid($value, $context = null)
     {
-        $value = (string) $value;
+        $value = (string)$value;
         $this->_setValue($value);
 
         if (is_array($context)) {

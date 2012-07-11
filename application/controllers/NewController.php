@@ -5,7 +5,7 @@ class NewController extends Zend_Controller_Action
 
     public function init()
     {
-        $techtree = new Application_Model_TechTreeItems();
+        $techtree          = new Application_Model_TechTreeItems();
         $this->view->types = $techtree->getItemTypes();
     }
 
@@ -16,6 +16,7 @@ class NewController extends Zend_Controller_Action
         }
         $this->_response->setRedirect($url);
     }
+
     public function objectAction()
     {
         if ($this->_request->isPost()) {
@@ -38,8 +39,8 @@ class NewController extends Zend_Controller_Action
             $this->_doRedirect(
                 array(
                     'controller' => 'objects',
-                    'action' => $params['type'],
-                    'category' => $params['category']
+                    'action'     => $params['type'],
+                    'category'   => $params['category']
                 )
             );
         }
@@ -51,7 +52,7 @@ class NewController extends Zend_Controller_Action
             $params = $this->_request->getParams();
             if ($params['categoryName'] != '') {
                 $techtreeEdit = new Application_Model_TechTreeEdit();
-                $categoryId = md5(microtime());
+                $categoryId   = md5(microtime());
                 $techtreeEdit->createCategory(
                     $categoryId,
                     $params['categoryName'],
@@ -67,13 +68,11 @@ class NewController extends Zend_Controller_Action
             $this->_doRedirect(
                 array(
                     'controller' => 'objects',
-                    'action' => $params['type']
+                    'action'     => $params['type']
                 )
             );
         }
     }
-
-
 }
 
 
