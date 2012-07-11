@@ -46,11 +46,23 @@ if (!class_exists('Debug') && APPLICATION_ENV == 'development') {
 
 /** Zend_Application */
 require_once 'Zend/Application.php';
+require_once 'Zend/Config/Ini.php';
 
-// Create application, bootstrap, and run
+$config = new Zend_Config_Ini(
+    APPLICATION_PATH . '/configs/application.ini',
+    APPLICATION_ENV,
+    array('allowModifications' => true)
+);
+if (file_exists(APPLICATION_PATH . '/configs/application.local.ini')) {
+    $localConfig = new Zend_Config_Ini(
+        APPLICATION_PATH . '/configs/application.local.ini',
+        APPLICATION_ENV
+    );
+    $config->merge($localConfig);
+}
 $application = new Zend_Application(
     APPLICATION_ENV,
-    APPLICATION_PATH . '/configs/application.ini'
+    $config
 );
 $application->bootstrap()
             ->run();

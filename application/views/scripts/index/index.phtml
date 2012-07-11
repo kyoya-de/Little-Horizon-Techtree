@@ -1,12 +1,41 @@
-<?php $this->headTitle('Übersicht'); ?>
+<?php
+$this->headTitle('Übersicht');
+$this->jQuery()->addJavascriptFile('js/jquery.crypt.js');
+?>
+<script type="text/javascript">
+<?php $this->jQuery()->onLoadCaptureStart(); ?>
+$('#addy').html(
+    $().crypt({
+        "method":"b64dec",
+        "source":"aW5mb0BreW95YS5kZQ=="
+    })
+);
+<?php $this->jQuery()->onLoadCaptureEnd(); ?>
+</script>
+
 <div class="ttCategory">
     <div class="ttCategoryTitle">Übersicht - TechTree <?php echo TechTree_Version::VERSION; ?> (<?php echo TechTree_Version::CODENAME; ?>)</div>
     <div class="subCategory">
         <div class="subCategoryTitle">Kontakt</div>
         <div class="subCategoryItem">
-            <div class="subCategoryItemDark">InGame: Darky</div>
+            <div class="subCategoryItemDark">InGame: ---</div>
             <div class="subCategoryItem">ICQ: 411045128</div>
             <div class="subCategoryItemDark">Skype: stkrenz</div>
+            <div class="subCategoryItem">E-Mail: <span id="addy"></span></div>
+        </div>
+    </div>
+    <div class="subCategory">
+        <div class="subCategoryTitle">Aufruf an die Community</div>
+        <div class="subCategoryItem">
+            <div class="subCategoryItemDark">
+                    Hi,<br/><br/>
+                    lang lang ists her, dass sich hier was getan hat. Dies liegt unter anderem daran, dass mir die Ideen ausgehen.
+                <p>
+                    Deshalb bitte ich euch in Featurewünsche und Verbesserungsvorschläge in meinem <a href="http://forum.kyoya.de/viewforum.php?f=3">Forum</a> niederzuschreiben.
+                </p>
+                <p>URL zum Forum: <a href="http://forum.kyoya.de/viewforum.php?f=3" target="_blank">http://forum.kyoya.de/viewforum.php?f=3</a></p>
+            </div>
+            <div class="subCategoryItem">Nebenbei: Ich habe das Zend Framework aktualisiert.</div>
         </div>
     </div>
     <div class="subCategory">

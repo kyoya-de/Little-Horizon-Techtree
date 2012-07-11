@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Validate
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Hostname.php 22830 2010-08-12 16:05:09Z thomas $
+ * @version    $Id: Hostname.php 24307 2011-07-30 02:13:14Z adamlundrigan $
  */
 
 /**
@@ -41,7 +41,7 @@ require_once 'Zend/Validate/Ip.php';
  *
  * @category   Zend
  * @package    Zend_Validate
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Validate_Hostname extends Zend_Validate_Abstract
@@ -100,12 +100,12 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
     /**
      * Allows all types of hostnames
      */
-    const ALLOW_ALL   = 7;
+    const ALLOW_URI = 8;
 
     /**
      * Allows all types of hostnames
      */
-    const ALLOW_URI = 8;
+    const ALLOW_ALL = 15;
 
     /**
      * Array of valid top-level-domains
@@ -502,7 +502,7 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
 
         $this->_setValue($value);
         // Check input against IP address schema
-        if (preg_match('/^[0-9.a-e:.]*$/i', $value) &&
+        if (preg_match('/^[0-9a-f:.]*$/i', $value) &&
             $this->_options['ip']->setTranslator($this->getTranslator())->isValid($value)) {
             if (!($this->_options['allow'] & self::ALLOW_IP)) {
                 $this->_error(self::IP_ADDRESS_NOT_ALLOWED);
@@ -512,8 +512,36 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
             }
         }
 
-        // Check input against DNS hostname schema
+        // RFC3986 3.2.2 states:
+        // 
+        //     The rightmost domain label of a fully qualified domain name
+        //     in DNS may be followed by a single "." and should be if it is 
+        //     necessary to distinguish between the complete domain name and
+        //     some local domain.
+        //     
+        // (see ZF-6363)
+        
+        // Local hostnames are allowed to be partitial (ending '.')
+        if ($this->_options['allow'] & self::ALLOW_LOCAL) {
+            if (substr($value, -1) === '.') {
+                $value = substr($value, 0, -1);
+                if (substr($value, -1) === '.') {
+                    // Empty hostnames (ending '..') are not allowed
+                    $this->_error(self::INVALID_LOCAL_NAME);
+                    return false;
+                }
+            }
+        }
+
         $domainParts = explode('.', $value);
+
+        // Prevent partitial IP V4 adresses (ending '.')
+        if ((count($domainParts) == 4) && preg_match('/^[0-9.a-e:.]*$/i', $value) &&
+            $this->_options['ip']->setTranslator($this->getTranslator())->isValid($value)) {
+            $this->_error(self::INVALID_LOCAL_NAME);
+        }
+
+        // Check input against DNS hostname schema
         if ((count($domainParts) > 1) && (strlen($value) >= 4) && (strlen($value) <= 254)) {
             $status = false;
 
@@ -634,7 +662,7 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
         }
 
         // Check input against local network name schema; last chance to pass validation
-        $regexLocal = '/^(([a-zA-Z0-9\x2d]{1,63}\x2e)*[a-zA-Z0-9\x2d]{1,63}){1,254}$/';
+        $regexLocal = '/^(([a-zA-Z0-9\x2d]{1,63}\x2e)*[a-zA-Z0-9\x2d]{1,63}[\x2e]{0,1}){1,254}$/';
         $status = @preg_match($regexLocal, $value);
 
         // If the input passes as a local network name, and local network names are allowed, then the

@@ -2,17 +2,17 @@
 class TechTree_Db extends PDO
 {
     private $_dbName = null;
-    
+
     public function __construct($options)
     {
         if (!isset($options['host'])) {
             throw new TechTree_Db_Exception('You must specify a MySQL host!');
         }
         if (!isset($options['user'])) {
-            $options['user'];
+            $options['user'] = '';
         }
-        if (!isset($options['pass'])) {
-            $options['pass'] = '';
+        if (!isset($options['pass']) || empty($options['pass'])) {
+            $options['pass'] = null;
         }
         if (!isset($options['dbName'])) {
             throw new TechTree_Db_Exception(
@@ -26,7 +26,7 @@ class TechTree_Db extends PDO
         $options['options'] += array(
             PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'",
         );
-        
+
         parent::__construct(
             sprintf(
                 'mysql:dbname=%s;host=%s',
@@ -38,7 +38,7 @@ class TechTree_Db extends PDO
             $options['options']
         );
     }
-    
+
     public function getDbName()
     {
         return $this->_dbName;
